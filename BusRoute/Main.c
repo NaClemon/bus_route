@@ -3,26 +3,32 @@
 #include <Windows.h>
 
 struct bus {
-	char* bus_name = (char *)malloc(sizeof(char) * 100);
+	char* bus_name = (char*)malloc(sizeof(char) * 100);
 	double longitude;
 	double latitude;
 }BUS;
 
-void Mainmenu();		// ¸ÞÀÎ È­¸é Ãâ·Â ÇÔ¼ö
-void Menu_station();	// ¹ö½º ¸ñ·Ï Ãâ·Â ÇÔ¼ö
-void Bus_station();		// ¹ö½º Á¤·ùÀå Ãâ·Â ÇÔ¼ö
-void Menu_place();		// ÁÖ¿ä Àå¼Ò Ãâ·Â ÇÔ¼ö
-void Place_Bus();		// ÁÖ¿ä Àå¼Ò ±ÙÃ³ Á¤·ùÀå Ãâ·Â ÇÔ¼ö
-void Result();			// °á°ú È­¸é Ãâ·Â ÇÔ¼ö
-void Detail_result();	// °á°ú ÀÚ¼¼È÷ º¸±â ÇÔ¼ö
-void Read_File(char *);		// ÆÄÀÏ ÀÐ±â ÇÔ¼ö
+void Mainmenu();		// ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
+void Menu_station();	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
+void Bus_station();		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
+void Menu_place();		// ï¿½Ö¿ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
+void Place_Bus();		// ï¿½Ö¿ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Ã³ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
+void Result();			// ï¿½ï¿½ï¿½ È­ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
+void Detail_result();	// ï¿½ï¿½ï¿½ ï¿½Ú¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
+void Read_File(char *);		// ï¿½ï¿½ï¿½ï¿½ ï¿½Ð±ï¿½ ï¿½Ô¼ï¿½
 void Click();
 
+struct place {
+	char name[50];
+	double longitude;
+	double latitude;
+};
 
 void gotoxy(int x, int y);
 void draw_square(int bus_num, int x);
 void draw_line();
 void bus_line(int bus_num);
+void Menu_place();
 
 int main()
 {
@@ -31,13 +37,15 @@ int main()
 	gotoxy(10, 1);
 	draw_square(717, 10);
 	gotoxy(1, 10);
-	printf("¹ö½º ¹øÈ£¸¦ ÀÔ·ÂÇÏ½Ã¿À : ");
-	scanf_s("%d", &bus_num);
+	printf("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ï½Ã¿ï¿½ : ");
+	scanf_s("%d", &bus_num, sizeof(int));
 	system("cls");
 
 	draw_square(bus_num, 0);
 	gotoxy(10, 1);
 	draw_line();
+
+
 
 	return 0;
 }
@@ -51,7 +59,7 @@ void gotoxy(int x, int y)
 void draw_square(int bus_num, int x)
 {
 	unsigned char a = 0xa6, b[7], i;
-	for (i = 1; i<7; i++)
+	for (i = 1; i < 7; i++)
 		b[i] = 0xa0 + i;
 	printf("%c%c", a, b[3]);
 	for (int x = 0; x < 3; x++) {
@@ -91,7 +99,7 @@ void draw_square(int bus_num, int x)
 void draw_line()
 {
 	unsigned char a = 0xa6, b[7], i;
-	for (i = 1; i<7; i++)
+	for (i = 1; i < 7; i++)
 		b[i] = 0xa0 + i;
 	for (int j = 0; j < 20; j++) {
 		gotoxy(10, j + 1);
@@ -113,7 +121,7 @@ void bus_line(int bus_num)
 	printf("%c%c", a, b[4]);
 	printf("\n");
 	printf("%c%c", a, b[2]);
-	printf(" µ¿ºÎÁ¾Á¡ ");
+	printf(" ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ");
 	printf("%c%c", a, b[2]);
 	printf("\n");
 	printf("%c%c", a, b[6]);
@@ -127,4 +135,29 @@ void bus_line(int bus_num)
 void Read_File(char* name)
 {
 	FILE* fl;
+}
+void Menu_place()
+{
+	int item = 0;
+	place* Place;
+	place start, finish;
+	int num; //yï¿½ï¿½Ç¥
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ï¿½Ò·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½ï¿½ place ï¿½ï¿½ï¿½ï¿½ï¿½Ò´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ \
+	  item ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
+	//k=2 ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ 
+	while (1) // strat==endï¿½Ï°ï¿½ï¿½ ï¿½Ýºï¿½ 
+	{
+		//Å¬ï¿½ï¿½ ï¿½Ô¼ï¿½ È£ï¿½ï¿½ 
+		for (int j = 0; j < item * 10; j += 10) //ï¿½ï¿½ï¿½ï¿½Æ® Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½Ûºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ý¸ï¿½Å­ È®ï¿½ï¿½
+		{
+			if (j < num && num < j + 10)  //ï¿½Ø´ï¿½Ç´ï¿½ ï¿½Îµï¿½ï¿½ï¿½ ï¿½ß°ï¿½
+			{
+
+			}
+
+		}
+	}
+
 }
