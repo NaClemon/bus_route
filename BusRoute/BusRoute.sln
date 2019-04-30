@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BusRoute", "BusRoute.vcxproj", "{5A228E35-27C4-4908-960E-8A004C205754}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BusRoute", "BusRoute\BusRoute.vcxproj", "{FEDDD40D-8BC6-488D-A55B-CEB5E3958B54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,19 +13,19 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5A228E35-27C4-4908-960E-8A004C205754}.Debug|x64.ActiveCfg = Debug|x64
-		{5A228E35-27C4-4908-960E-8A004C205754}.Debug|x64.Build.0 = Debug|x64
-		{5A228E35-27C4-4908-960E-8A004C205754}.Debug|x86.ActiveCfg = Debug|Win32
-		{5A228E35-27C4-4908-960E-8A004C205754}.Debug|x86.Build.0 = Debug|Win32
-		{5A228E35-27C4-4908-960E-8A004C205754}.Release|x64.ActiveCfg = Release|x64
-		{5A228E35-27C4-4908-960E-8A004C205754}.Release|x64.Build.0 = Release|x64
-		{5A228E35-27C4-4908-960E-8A004C205754}.Release|x86.ActiveCfg = Release|Win32
-		{5A228E35-27C4-4908-960E-8A004C205754}.Release|x86.Build.0 = Release|Win32
+		{FEDDD40D-8BC6-488D-A55B-CEB5E3958B54}.Debug|x64.ActiveCfg = Debug|x64
+		{FEDDD40D-8BC6-488D-A55B-CEB5E3958B54}.Debug|x64.Build.0 = Debug|x64
+		{FEDDD40D-8BC6-488D-A55B-CEB5E3958B54}.Debug|x86.ActiveCfg = Debug|Win32
+		{FEDDD40D-8BC6-488D-A55B-CEB5E3958B54}.Debug|x86.Build.0 = Debug|Win32
+		{FEDDD40D-8BC6-488D-A55B-CEB5E3958B54}.Release|x64.ActiveCfg = Release|x64
+		{FEDDD40D-8BC6-488D-A55B-CEB5E3958B54}.Release|x64.Build.0 = Release|x64
+		{FEDDD40D-8BC6-488D-A55B-CEB5E3958B54}.Release|x86.ActiveCfg = Release|Win32
+		{FEDDD40D-8BC6-488D-A55B-CEB5E3958B54}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {E03D9D4E-3AC4-4AD2-8CC4-E63DBE17B03F}
+		SolutionGuid = {C6B5B7E7-55DD-430F-B8B1-6F9B2CBF5DA3}
 	EndGlobalSection
 EndGlobal

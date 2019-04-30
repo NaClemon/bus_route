@@ -1,4 +1,0 @@
-﻿  Main.cpp
-C:\Users\995sk\Desktop\bus_route\BusRoute\Main.cpp(49): warning C4838: 'int'에서 'SHORT'(으)로의 변환에는 축소 변환이 필요합니다.
-C:\Users\995sk\Desktop\bus_route\BusRoute\Main.cpp(131): warning C4101: 'fl' :참조되지 않은 지역 변수입니다.
-  BusRoute.vcxproj -> C:\Users\995sk\Desktop\bus_route\BusRoute\Debug\BusRoute.exe
