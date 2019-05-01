@@ -43,7 +43,6 @@ void Menu_place();
 
 int main()
 {
-	int num;
 	A = (Bus*)malloc(sizeof(Bus) * 100);
 	Read_File("512.csv", A);
 

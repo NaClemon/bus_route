@@ -1,6 +1,4 @@
 ﻿  Main.c
-C:\Users\egnaro\Desktop\bus_route\BusRoute\BusRoute\Main.c(40): warning C4020: 'Read_File': 실제 매개 변수가 너무 많습니다.
-C:\Users\egnaro\Desktop\bus_route\BusRoute\BusRoute\Main.c(148): warning C4029: 선언된 정식 매개 변수 목록이 정의와 다릅니다.
-C:\Users\egnaro\Desktop\bus_route\BusRoute\BusRoute\Main.c(188): warning C4010: 한 줄로 된 주석에 줄 연속 문자가 있습니다.
-C:\Users\egnaro\Desktop\bus_route\BusRoute\BusRoute\Main.c(184): warning C4101: 'place' :참조되지 않은 지역 변수입니다.
+C:\Users\egnaro\Desktop\bus_route\BusRoute\BusRoute\Main.c(195): warning C4010: 한 줄로 된 주석에 줄 연속 문자가 있습니다.
+C:\Users\egnaro\Desktop\bus_route\BusRoute\BusRoute\Main.c(191): warning C4101: 'place' :참조되지 않은 지역 변수입니다.
   BusRoute.vcxproj -> C:\Users\egnaro\Desktop\bus_route\BusRoute\Debug\BusRoute.exe
