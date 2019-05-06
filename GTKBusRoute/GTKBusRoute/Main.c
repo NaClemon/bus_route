@@ -7,6 +7,9 @@
 #include <gtk/gtk.h>
 #include <gmodule.h>
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 /* 버스 정거장 구조체 */
 typedef struct bus {
 	struct bus* next;
@@ -15,12 +18,22 @@ typedef struct bus {
 	double latitude;
 }Bus;
 
+/* 주요 장소 구조체 */
 typedef struct place {
 	struct place* next;
 	char name[255];
 	double longitude;
 	double latitude;
 }Place;
+
+/*
+	거리 계산 공식
+	long = lon2 - lon1;
+	lati = lat2 - lat1;
+	a = sin^2(lati/2) + cos(lat1)cos(lat2)sin^2(long/2)
+	c = 2arctan(sqrt(a)/sqrt(1-a))
+	d = 6371 * c
+*/
 
 /* 버스 개수 만큼 전역 변수 설정 */
 Bus* A;
@@ -40,11 +53,13 @@ GtkWidget* place_window;
 /* 구현 완료 함수 */
 void Read_File_Bus(char*, Bus*);				// 파일 읽기 함수(버스)
 void Read_File_Place(char*, Place*);			// 파일 읽기 함수(장소)
-char* EncodingKR(char*);				// 인코딩 함수
-void Close_Window(GtkWidget*, GPtrArray*);	// 이전 버튼
-void Main_Menu();						// 메인 화면 출력
-void Bus_Menu(GtkWidget*, gpointer);	// 버스 선택 출력
-void Place_Menu(GtkWidget*, gpointer);	// 주요 장소 출력
+char* EncodingKR(char*);						// 인코딩 함수
+void Close_Window(GtkWidget*, GPtrArray*);		// 이전 버튼
+void Main_Menu();								// 메인 화면 출력
+void Bus_Menu(GtkWidget*, gpointer);			// 버스 선택 출력
+void Place_Menu(GtkWidget*, gpointer);			// 주요 장소 출력
+void Place_Bus_Station(GtkWidget*, gpointer);	// 주요 장소 근처 정류장 출력
+double deg2rad(double);							// 각도를 라디안으로 변환
 
 
 
@@ -213,13 +228,15 @@ void Place_Menu(GtkWidget* widget, gpointer window)
 
 	char* temp_string;
 	int i = 0;
-	//int struct_size = sizeof(main_place) / sizeof(Place);
+	int j = 0;
 
 	GtkWidget* placeButton[20];
 	GtkWidget* label;
 
 	GtkWidget* start_label;
 	GtkWidget* end_label;
+
+	Place* curr;
 
 	gtk_widget_hide(window);
 
@@ -232,15 +249,7 @@ void Place_Menu(GtkWidget* widget, gpointer window)
 	frame = gtk_fixed_new();
 	gtk_container_add(GTK_CONTAINER(place_window), frame);
 
-	/*for (i = 0; i < 5; i++)
-	{
-		placeButton[i] = gtk_button_new_with_label("");
-		gtk_widget_set_size_request(placeButton[i], 1, 1);
-		label = gtk_label_new(main_place[i].name);
-		gtk_fixed_put(GTK_FIXED(frame), label, 10, 40 + i * 60);
-		gtk_fixed_put(GTK_FIXED(frame), placeButton[i], 10, 5 + i * 60);
-	}*/
-	Place* curr = main_place->next;
+	curr = main_place->next;
 	while (curr != NULL)
 	{
 		placeButton[i] = gtk_button_new_with_label("");
@@ -273,8 +282,64 @@ void Place_Menu(GtkWidget* widget, gpointer window)
 	g_signal_connect(place_window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 	g_signal_connect(closeButton, "clicked", G_CALLBACK(Close_Window), temp);
 
+	curr = main_place->next;
+	while (curr != NULL)
+	{
+		g_signal_connect(placeButton[j], "clicked", G_CALLBACK(Place_Bus_Station), frame);
+		curr = curr->next;
+		j++;
+	}
+
 	gtk_window_set_modal(GTK_WINDOW(place_window), TRUE);
 	gtk_widget_show_all(place_window);
+}
+
+// 서브 윈도우 테스트 중
+// http://hoyoung2.blogspot.com/2011/06/gtk-tutorial.html 참고 중
+void Place_Bus_Station(GtkWidget* widget, gpointer num)
+{
+	/*
+	클릭한 장소(num)의 위도 및 경도
+	모든 버스 노선도와 비교 일정 값 이하 값 출력
+	버튼으로 출력
+	*/
+	/*int i;
+	double temp_lat;
+	double temp_lon;
+
+	curr = A->next;
+	for (i = 0; i < num; i++)
+	{
+		curr = curr->next;
+	}
+	temp_lat = curr->latitude;
+	temp_lon = curr->longitude;*/
+
+	GtkWidget* table;
+	GtkWidget* wins;
+	
+	Bus* curr;
+
+
+	/*curr = A->next;
+	while (curr != NULL)
+	{
+		
+	}*/
+
+	table = gtk_table_new(10, 10, FALSE);
+	gtk_table_set_col_spacings(GTK_TABLE(table), 3);
+
+	wins = gtk_text_view_new();
+	gtk_text_view_set_editable(GTK_TEXT_VIEW(wins), FALSE);
+	gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(wins), FALSE);
+	gtk_table_attach(GTK_TABLE(table), wins, 0, 2, 1, 3,
+		GTK_FILL | GTK_EXPAND, GTK_FILL | GTK_EXPAND, 1, 1);
+
+	//gtk_container_add(GTK_CONTAINER(num), table);
+	gtk_fixed_put(GTK_FIXED(num), table, 150, 150);
+
+	gtk_widget_show_all(num);
 }
 
 /// <summary>
@@ -335,6 +400,15 @@ void Read_File_Bus(char* name, Bus* bus_num)
 			bus_list[i - 1]->next = NULL;
 		fclose(bus_inform);
 	}
+}
+
+/// <summary>
+/// 라디안 변환 함수
+/// </summary>
+/// <param name="degree">변환할 각도 값</param>
+double deg2rad(double degree)
+{
+	return degree * M_PI / 180;
 }
 
 /// <summary>
