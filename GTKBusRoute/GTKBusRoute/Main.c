@@ -75,6 +75,8 @@ double deg2rad(double);							// 각도를 라디안으로 변환
 void KnowToButton(GtkWidget*, int);				// 클릭 버튼 확인
 double Calc_Dis(double, double, double, double);	// 거리 계산
 void Dis_Result(double, double, Near*, Bus*);		// 거리 판정 결과
+void Label_Inform(GtkWidget*, GPtrArray*);		// 선택 버튼 정류장 정보 저장
+void KnowToLabel(GtkWidget*, char*);			// 프레임에서 클릭 버튼 확인
 
 int check_frame = 0;
 
@@ -342,6 +344,9 @@ void Place_Bus_Station(GtkWidget* widget)
 	GtkWidget* table;
 	GtkWidget* button[10];
 
+	GtkWidget* startlb;
+	GtkWidget* endlb;
+
 	GPtrArray* temp;
 
 	GdkColor color;
@@ -352,6 +357,7 @@ void Place_Bus_Station(GtkWidget* widget)
 	char buffer[32];
 	double temp_lat, temp_lon;
 	double comp_dis;
+	char* temp_string;
 	int i;
 	int j;
 
@@ -426,12 +432,31 @@ void Place_Bus_Station(GtkWidget* widget)
 	//gtk_widget_modify_bg(table, GTK_STATE_NORMAL, &color);
 	//gtk_widget_override_color(table, GTK_STATE_NORMAL, &color);
 
-	temp = g_ptr_array_new();
+	temp_string = EncodingKR("");
+	startlb = gtk_label_new(temp_string);
+	gtk_fixed_put(GTK_FIXED(g_ptr_array_index(place_button_num, 0)), startlb, 270, 500);
+
+	temp_string = EncodingKR("");
+	endlb = gtk_label_new(temp_string);
+	gtk_fixed_put(GTK_FIXED(g_ptr_array_index(place_button_num, 0)), endlb, 550, 500);
+
+	/*temp = g_ptr_array_new();
 	g_ptr_array_add(temp, place_window);
-	g_ptr_array_add(temp, main_window);
+	g_ptr_array_add(temp, main_window);*/
 	/*gtk_widget_grab_default(button);
 	gtk_widget_show(button);
 	gtk_widget_show(scrolled_window);*/
+	temp = g_ptr_array_new();
+	g_ptr_array_add(temp, startlb);
+	// 수정 중
+	curr_result = near_station->next;
+	j = 0;
+	while (curr_result != NULL)
+	{
+		g_signal_connect(button[j], 'clicked', G_CALLBACK(Label_Inform), curr_result->station);
+		curr_result = curr_result->next;
+		j++;
+	}
 	for (j = 0; j < i; j++)
 	{
 		g_signal_connect(button[j], "clicked", G_CALLBACK(Close_Window), temp);
@@ -496,6 +521,19 @@ void Place_Bus_Station(GtkWidget* widget)
 	
 	gtk_fixed_put(GTK_FIXED(frame), subwindow, 200, 35);*/
 
+}
+
+/// <summary>
+/// 클릭한 버튼의 이름을 받아와 라벨에 적용
+/// </summary>
+/// <param name="widget"></param>
+/// <param name="window"></param>
+void Label_Inform(GtkWidget* widget, GPtrArray* label)
+{
+	char* buff[150];
+
+	sprintf(buff, "%d", count);
+	gtk_label_set_text(label, buff);
 }
 
 void Dis_Result(double temp_lat, double temp_lon, Near* checking, Bus* ch_bus)

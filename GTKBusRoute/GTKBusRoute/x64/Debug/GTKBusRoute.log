@@ -80,10 +80,10 @@ C:\Users\egnaro\Desktop\bus_route\GTKBusRoute\GTKBusRoute\x64-windows\include\gt
 C:\Users\egnaro\Desktop\bus_route\GTKBusRoute\GTKBusRoute\x64-windows\include\gtk\deprecated\gtkuimanager.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 C:\Users\egnaro\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(107): warning C4101: 'label' :참조되지 않은 지역 변수입니다.
 C:\Users\egnaro\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(329): warning C4022: 'g_signal_connect_data': 실제 매개 변수 4의 포인터가 일치하지 않습니다.
-C:\Users\egnaro\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(376): warning C4047: '<': 'int'의 간접 참조 수준이 'gpointer'과(와) 다릅니다.
-C:\Users\egnaro\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(354): warning C4101: 'comp_dis' :참조되지 않은 지역 변수입니다.
-C:\Users\egnaro\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(352): warning C4101: 'buffer' :참조되지 않은 지역 변수입니다.
-C:\Users\egnaro\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(347): warning C4101: 'color' :참조되지 않은 지역 변수입니다.
-C:\Users\egnaro\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(546): warning C4312: '형식 캐스트': 'int'에서 더 큰 'gpointer'(으)로의 변환입니다.
-C:\Users\egnaro\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(699): warning C4101: 'k' :참조되지 않은 지역 변수입니다.
+C:\Users\egnaro\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(380): warning C4047: '<': 'int'의 간접 참조 수준이 'gpointer'과(와) 다릅니다.
+C:\Users\egnaro\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(357): warning C4101: 'comp_dis' :참조되지 않은 지역 변수입니다.
+C:\Users\egnaro\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(355): warning C4101: 'buffer' :참조되지 않은 지역 변수입니다.
+C:\Users\egnaro\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(350): warning C4101: 'color' :참조되지 않은 지역 변수입니다.
+C:\Users\egnaro\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(558): warning C4312: '형식 캐스트': 'int'에서 더 큰 'gpointer'(으)로의 변환입니다.
+C:\Users\egnaro\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(711): warning C4101: 'k' :참조되지 않은 지역 변수입니다.
   GTKBusRoute.vcxproj -> C:\Users\egnaro\Desktop\bus_route\GTKBusRoute\x64\Debug\GTKBusRoute.exe
