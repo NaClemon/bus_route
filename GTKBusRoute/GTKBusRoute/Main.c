@@ -62,6 +62,9 @@ GtkWidget* place_scrolled_window;
 
 GPtrArray* place_button_num;
 
+// 주요 장소에서 나온 버스 정류장 선택 버튼을 찾는 변수
+GPtrArray* place_station_button;
+
 /* 구현 완료 함수 */
 void Read_File_Bus(char*, Bus*);				// 파일 읽기 함수(버스)
 void Read_File_Place(char*, Place*);			// 파일 읽기 함수(장소)
@@ -75,10 +78,14 @@ double deg2rad(double);							// 각도를 라디안으로 변환
 void KnowToButton(GtkWidget*, int);				// 클릭 버튼 확인
 double Calc_Dis(double, double, double, double);	// 거리 계산
 void Dis_Result(double, double, Near*, Bus*);		// 거리 판정 결과
-void Label_Inform(GtkWidget*, GPtrArray*);		// 선택 버튼 정류장 정보 저장
-void KnowToLabel(GtkWidget*, char*);			// 프레임에서 클릭 버튼 확인
+void Label_Inform(GtkWidget*);				// 선택 버튼 정류장 정보 저장
+void KnowToLabel(GtkWidget*, int);			// 프레임에서 클릭 버튼 확인
 
 int check_frame = 0;
+
+// 주요 장소에서 start, end 버튼 확인
+char check_start = 0;
+char check_end = 0;
 
 gint count = 0;
 
@@ -268,6 +275,7 @@ void Place_Menu(GtkWidget* widget, gpointer window)
 	int j = 0;
 
 	GtkWidget* placeButton[20];
+	GtkWidget* resultButton;
 	GtkWidget* label;
 
 	GtkWidget* start_label;
@@ -310,6 +318,11 @@ void Place_Menu(GtkWidget* widget, gpointer window)
 	end_label = gtk_label_new(temp_string);
 	gtk_fixed_put(GTK_FIXED(frame), end_label, 480, 500);
 
+	temp_string = EncodingKR("결과 보기");
+	resultButton = gtk_button_new_with_label(temp_string);
+	gtk_widget_set_size_request(resultButton, 80, 35);
+	gtk_fixed_put(GTK_FIXED(frame), resultButton, 680, 500);
+
 	// 버튼 위치 조정 필요
 	temp_string = EncodingKR("뒤로 가기");
 	closeButton = gtk_button_new_with_label(temp_string);
@@ -346,8 +359,6 @@ void Place_Bus_Station(GtkWidget* widget)
 
 	GtkWidget* startlb;
 	GtkWidget* endlb;
-
-	GPtrArray* temp;
 
 	GdkColor color;
 
@@ -403,7 +414,6 @@ void Place_Bus_Station(GtkWidget* widget)
 		curr_result = curr_result->next;
 		i++;
 	}
-
 	// gptrarray사용 버튼 출력 테스트
 	/*if (g_ptr_array_index(place_button_num, 1) == 0)
 		for (int i = 0; i < 10; i++)
@@ -432,12 +442,22 @@ void Place_Bus_Station(GtkWidget* widget)
 	//gtk_widget_modify_bg(table, GTK_STATE_NORMAL, &color);
 	//gtk_widget_override_color(table, GTK_STATE_NORMAL, &color);
 
-	temp_string = EncodingKR("");
-	startlb = gtk_label_new(temp_string);
+	if (check_start == 0)
+	{
+		temp_string = EncodingKR("");
+		startlb = gtk_label_new(temp_string);
+	}
+	else
+		startlb = gtk_label_new(start);
 	gtk_fixed_put(GTK_FIXED(g_ptr_array_index(place_button_num, 0)), startlb, 270, 500);
 
-	temp_string = EncodingKR("");
-	endlb = gtk_label_new(temp_string);
+	if (check_end== 0)
+	{
+		temp_string = EncodingKR("");
+		endlb = gtk_label_new(temp_string);
+	}
+	else
+		endlb = gtk_label_new(end);
 	gtk_fixed_put(GTK_FIXED(g_ptr_array_index(place_button_num, 0)), endlb, 550, 500);
 
 	/*temp = g_ptr_array_new();
@@ -446,21 +466,25 @@ void Place_Bus_Station(GtkWidget* widget)
 	/*gtk_widget_grab_default(button);
 	gtk_widget_show(button);
 	gtk_widget_show(scrolled_window);*/
-	temp = g_ptr_array_new();
-	g_ptr_array_add(temp, startlb);
+
+	place_station_button = g_ptr_array_new();
+	g_ptr_array_add(place_station_button, startlb);
+	g_ptr_array_add(place_station_button, endlb);
+	g_ptr_array_add(place_station_button, near_station);
+
 	// 수정 중
 	curr_result = near_station->next;
 	j = 0;
 	while (curr_result != NULL)
 	{
-		g_signal_connect(button[j], 'clicked', G_CALLBACK(Label_Inform), curr_result->station);
+		g_signal_connect(button[j], "clicked", G_CALLBACK(KnowToLabel), j);
 		curr_result = curr_result->next;
 		j++;
 	}
-	for (j = 0; j < i; j++)
+	/*for (j = 0; j < i; j++)
 	{
 		g_signal_connect(button[j], "clicked", G_CALLBACK(Close_Window), temp);
-	}
+	}*/
 
 	gtk_widget_show_all(place_window);
 	g_ptr_array_remove_index(place_button_num, 1);
@@ -523,17 +547,46 @@ void Place_Bus_Station(GtkWidget* widget)
 
 }
 
+/// 손광호
 /// <summary>
 /// 클릭한 버튼의 이름을 받아와 라벨에 적용
 /// </summary>
 /// <param name="widget"></param>
 /// <param name="window"></param>
-void Label_Inform(GtkWidget* widget, GPtrArray* label)
+void Label_Inform(GtkWidget* widget)
 {
-	char* buff[150];
-
-	sprintf(buff, "%d", count);
-	gtk_label_set_text(label, buff);
+	Near* temp;
+	Near* curr;
+	char* t;
+	int i;
+	temp = g_ptr_array_index(place_station_button, 2);
+	curr = temp->next;
+	for (i = 0; i < g_ptr_array_index(place_station_button, 3); i++)
+	{
+		curr = curr->next;
+	}
+	if (check_start == 0 && check_end == 0)
+	{
+		strcpy_s(start, sizeof(start), curr->station);
+		gtk_label_set_text(g_ptr_array_index(place_station_button, 0), start);
+		check_start = 1;
+	}
+	else if (check_start == 1 && check_end == 0)
+	{
+		strcpy_s(end, sizeof(end), curr->station);
+		if (strcmp(start, end) == 0)
+		{
+			strcpy_s(start, sizeof(start), "");
+			gtk_label_set_text(g_ptr_array_index(place_station_button, 0), start);
+			check_start = 0;
+		}
+		else
+		{
+			gtk_label_set_text(g_ptr_array_index(place_station_button, 1), end);
+			check_end = 1;
+		}
+	}
+	g_ptr_array_remove_index(place_station_button, 3);
 }
 
 void Dis_Result(double temp_lat, double temp_lon, Near* checking, Bus* ch_bus)
@@ -573,6 +626,14 @@ void Dis_Result(double temp_lat, double temp_lon, Near* checking, Bus* ch_bus)
 		checking->next = NULL;
 }
 
+// 손광호
+// 서브 윈도우의 라벨 확인
+void KnowToLabel(GtkWidget* widget, int button_num)
+{
+	g_ptr_array_add(place_station_button, (gpointer)button_num);
+	Label_Inform(widget);
+}
+
 /// <summary>
 /// 반복으로 출력한 버튼을 클릭했을 때
 /// 어떤 버튼을 클릭했는지 확인
@@ -594,6 +655,10 @@ void Close_Window(GtkWidget* widget, GPtrArray* window)
 {
 	gtk_widget_destroy(GTK_WIDGET(g_ptr_array_index(window, 0)));
 	gtk_widget_show(g_ptr_array_index(window, 1));
+	strcpy_s(start, sizeof(start), "");
+	strcpy_s(end, sizeof(end), "");
+	check_start = 0;
+	check_end = 0;
 }
 
 /// <summary>
