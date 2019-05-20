@@ -44,7 +44,7 @@ typedef struct nearp {
 */
 
 /* 버스 개수 만큼 전역 변수 설정 */
-Bus* A;
+Bus* A, * B, * C, * D;
 
 /* 주요 장소 */
 Place* main_place;
@@ -59,8 +59,10 @@ GtkWidget* bus_window;
 GtkWidget* place_window;
 
 GtkWidget* place_scrolled_window;
+GtkWidget* bus_scrolled_window;
 
 GPtrArray* place_button_num;
+GPtrArray* bus_button_num;
 
 /* 구현 완료 함수 */
 void Read_File_Bus(char*, Bus*);				// 파일 읽기 함수(버스)
@@ -73,6 +75,7 @@ void Place_Menu(GtkWidget*, gpointer);			// 주요 장소 출력
 void Place_Bus_Station(GtkWidget*);	// 주요 장소 근처 정류장 출력
 double deg2rad(double);							// 각도를 라디안으로 변환
 void KnowToButton(GtkWidget*, int);				// 클릭 버튼 확인
+void KnowToButtonBUS(GtkWidget*, int);         // 클릭 버튼 확인
 double Calc_Dis(double, double, double, double);	// 거리 계산
 void Dis_Result(double, double, Near*, Bus*);		// 거리 판정 결과
 void Label_Inform(GtkWidget*, GPtrArray*);		// 선택 버튼 정류장 정보 저장
@@ -111,7 +114,7 @@ int main(int argc, char** argv)
 	// 버스 정보 저장
 	A = (Bus*)malloc(sizeof(Bus) * 100);
 	Read_File_Bus("512.csv", A);
-
+	
 	// 주요 장소 저장
 	main_place = (Place*)malloc(sizeof(Place));
 	Read_File_Place("place.csv", main_place);
@@ -217,8 +220,13 @@ void Bus_Menu(GtkWidget* widget, gpointer window)
 {
 	GtkWidget* frame;
 	GtkWidget* closeButton;
+	GtkWidget* busButton[10];
+	GtkWidget* label;
 
 	GPtrArray* temp;
+
+	GtkWidget* start_label;
+	GtkWidget* end_label;
 
 	char* temp_string;
 
@@ -235,6 +243,38 @@ void Bus_Menu(GtkWidget* widget, gpointer window)
 	frame = gtk_fixed_new();
 	gtk_container_add(GTK_CONTAINER(bus_window), frame);
 
+	busButton[0] = gtk_button_new_with_label("");
+	gtk_widget_set_size_request(busButton[0], 1, 1);
+	label = gtk_label_new("105");
+	gtk_fixed_put(GTK_FIXED(frame), label, 10, 40);
+	gtk_fixed_put(GTK_FIXED(frame), busButton[0], 10, 5);
+
+	busButton[1] = gtk_button_new_with_label("");
+	gtk_widget_set_size_request(busButton[1], 1, 1);
+	label = gtk_label_new("512");
+	gtk_fixed_put(GTK_FIXED(frame), label, 10, 100);
+	gtk_fixed_put(GTK_FIXED(frame), busButton[1], 10, 65);
+
+	busButton[2] = gtk_button_new_with_label("");
+	gtk_widget_set_size_request(busButton[2], 1, 1);
+	label = gtk_label_new("717");
+	gtk_fixed_put(GTK_FIXED(frame), label, 10, 160);
+	gtk_fixed_put(GTK_FIXED(frame), busButton[2], 10, 125);
+
+	busButton[3] = gtk_button_new_with_label("");
+	gtk_widget_set_size_request(busButton[3], 1, 1);
+	label = gtk_label_new("823");
+	gtk_fixed_put(GTK_FIXED(frame), label, 10, 220);
+	gtk_fixed_put(GTK_FIXED(frame), busButton[3], 10, 185);
+
+	temp_string = EncodingKR("출발 지점: ");
+	start_label = gtk_label_new(temp_string);
+	gtk_fixed_put(GTK_FIXED(frame), start_label, 200, 500);
+
+	temp_string = EncodingKR("도착 지점: ");
+	end_label = gtk_label_new(temp_string);
+	gtk_fixed_put(GTK_FIXED(frame), end_label, 480, 500);
+
 	// 버튼 위치 조정 필요
 	temp_string = EncodingKR("뒤로 가기");
 	closeButton = gtk_button_new_with_label(temp_string);
@@ -247,10 +287,75 @@ void Bus_Menu(GtkWidget* widget, gpointer window)
 
 	g_signal_connect(closeButton, "clicked", G_CALLBACK(Close_Window), temp);
 
+	bus_button_num = g_ptr_array_new();
+	g_ptr_array_add(bus_button_num, frame);
+
+	for (int j = 0; j < 4; j++) {
+		g_signal_connect(busButton[j], "clicked", G_CALLBACK(KnowToButtonBUS), j);
+	}
+
 	gtk_window_set_modal(GTK_WINDOW(bus_window), TRUE);
 	gtk_widget_show_all(bus_window);
 }
+void Bus_Station(GtkWidget* widget)
+{
+	GtkWidget* frame;
+	GtkWidget* table;
+	GtkWidget* button[100];
 
+	GPtrArray* temp;
+	Bus* curr;
+	GdkColor color;
+
+	Near* near_station = NULL;
+	Near* curr_result = NULL;
+	char buffer[32];
+	double temp_lat, temp_lon;
+	double comp_dis;
+	int i = 0;
+	int j;
+
+	if (check_frame == 1)
+		gtk_container_remove(GTK_CONTAINER(g_ptr_array_index(bus_button_num, 0)), bus_scrolled_window);
+
+	bus_scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(bus_scrolled_window),
+		GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+
+	table = gtk_table_new(10, 10, FALSE);
+	gtk_table_set_row_spacings(GTK_TABLE(table), 20);
+	gtk_table_set_col_spacings(GTK_TABLE(table), 20);
+	gtk_scrolled_window_add_with_viewport(
+		GTK_SCROLLED_WINDOW(bus_scrolled_window), table);
+
+	curr = A->next;
+	while (curr != NULL)
+	{
+		button[i] = gtk_button_new_with_label(EncodingKR(curr->station));
+		gtk_widget_set_size_request(button[i], 20, 3);
+		gtk_table_attach_defaults(GTK_TABLE(table), button[i], 0, 1, i, i + 1);
+		gtk_widget_show(button[i]);
+		curr = curr->next;
+		i++;
+	}
+
+	gtk_fixed_put(GTK_FIXED(g_ptr_array_index(bus_button_num, 0)), bus_scrolled_window, 200, 10);
+	gtk_widget_set_size_request(bus_scrolled_window, 400, 400);
+
+	temp = g_ptr_array_new();
+	g_ptr_array_add(temp, bus_window);
+	g_ptr_array_add(temp, main_window);
+
+	for (j = 0; j < i; j++)
+	{
+		g_signal_connect(button[j], "clicked", G_CALLBACK(Close_Window), temp);
+	}
+
+	gtk_widget_show_all(bus_window);
+	g_ptr_array_remove_index(bus_button_num, 1);
+	check_frame = 1;
+
+}
 /// <summary>
 /// 주요 장소 선택 화면을 출력
 /// </summary>
@@ -396,7 +501,7 @@ void Place_Bus_Station(GtkWidget* widget)
 	i = 0;
 	while (curr_result != NULL)
 	{
-		button[i] = gtk_button_new_with_label(curr_result->station);
+		button[i] = gtk_button_new_with_label(EncodingKR(curr_result->station));
 		gtk_table_attach_defaults(GTK_TABLE(table), button[i],
 			0, 1, i, i + 1);
 		gtk_widget_show(button[i]);
@@ -453,7 +558,7 @@ void Place_Bus_Station(GtkWidget* widget)
 	j = 0;
 	while (curr_result != NULL)
 	{
-		g_signal_connect(button[j], 'clicked', G_CALLBACK(Label_Inform), curr_result->station);
+		g_signal_connect(button[j], "clicked", G_CALLBACK(Label_Inform), curr_result->station);
 		curr_result = curr_result->next;
 		j++;
 	}
@@ -584,7 +689,11 @@ void KnowToButton(GtkWidget* widget, int button_num)
 	g_ptr_array_add(place_button_num, (gpointer)button_num);
 	Place_Bus_Station(widget);
 }
-
+void KnowToButtonBUS(GtkWidget* widget, int button_num)
+{
+	g_ptr_array_add(bus_button_num, (gpointer)button_num);
+	Bus_Station(widget);
+}
 /// <summary>
 /// 이전 화면으로 돌아가는 기능을 한다.
 /// </summary>
