@@ -1,4 +1,4 @@
-#pragma warning(disable:4996)
+ï»¿#pragma warning(disable:4996)
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,7 +10,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-/* ¹ö½º Á¤°ÅÀå ±¸Á¶Ã¼ */
+/* ë²„ìŠ¤ ì •ê±°ì¥ êµ¬ì¡°ì²´ */
 typedef struct bus {
 	struct bus* next;
 	char station[255];
@@ -18,7 +18,7 @@ typedef struct bus {
 	double latitude;
 }Bus;
 
-/* ÁÖ¿ä Àå¼Ò ±¸Á¶Ã¼ */
+/* ì£¼ìš” ì¥ì†Œ êµ¬ì¡°ì²´ */
 typedef struct place {
 	struct place* next;
 	char name[255];
@@ -26,6 +26,7 @@ typedef struct place {
 	double latitude;
 }Place;
 
+/* ê·¼ì²˜ ì •ë¥˜ì¥ êµ¬ì¡°ì²´ */
 typedef struct nearp {
 	struct nearp* next;
 	char bus_name[50];
@@ -34,116 +35,89 @@ typedef struct nearp {
 	double latitude;
 }Near;
 
-/*
-	°Å¸® °è»ê °ø½Ä -> 0.8 ±âÁØ
-	long = lon2 - lon1;
-	lati = lat2 - lat1;
-	a = sin^2(lati/2) + cos(lat1)cos(lat2)sin^2(long/2)
-	c = 2arctan(sqrt(a)/sqrt(1-a))
-	d = 6371 * c
-*/
+/* ë²„ìŠ¤ ê°œìˆ˜ ë§Œí¼ ì „ì—­ ë³€ìˆ˜ ì„¤ì • */
+Bus* A, * B, * C, * D;
 
-/* ¹ö½º °³¼ö ¸¸Å­ Àü¿ª º¯¼ö ¼³Á¤ */
-Bus* A;
-
-/* ÁÖ¿ä Àå¼Ò */
+/* ì£¼ìš” ì¥ì†Œ */
 Place* main_place;
 
-/* Ãâ¹ß, µµÂø */
+/* ì¶œë°œ, ë„ì°© */
 char start[100];
 char end[100];
 
-/* È­¸é */
+/* í™”ë©´ */
 GtkWidget* main_window;
 GtkWidget* bus_window;
 GtkWidget* place_window;
 
+/* ìŠ¤í¬ë¡¤ ìœˆë„ìš° */
 GtkWidget* place_scrolled_window;
+GtkWidget* bus_scrolled_window;
 
+/* ë²„íŠ¼ í™•ì¸ */
 GPtrArray* place_button_num;
+GPtrArray* bus_button_num;
 
-/* ±¸Çö ¿Ï·á ÇÔ¼ö */
-void Read_File_Bus(char*, Bus*);				// ÆÄÀÏ ÀĞ±â ÇÔ¼ö(¹ö½º)
-void Read_File_Place(char*, Place*);			// ÆÄÀÏ ÀĞ±â ÇÔ¼ö(Àå¼Ò)
-char* EncodingKR(char*);						// ÀÎÄÚµù ÇÔ¼ö
-void Close_Window(GtkWidget*, GPtrArray*);		// ÀÌÀü ¹öÆ°
-void Main_Menu();								// ¸ŞÀÎ È­¸é Ãâ·Â
-void Bus_Menu(GtkWidget*, gpointer);			// ¹ö½º ¼±ÅÃ Ãâ·Â
-void Place_Menu(GtkWidget*, gpointer);			// ÁÖ¿ä Àå¼Ò Ãâ·Â
-void Place_Bus_Station(GtkWidget*);	// ÁÖ¿ä Àå¼Ò ±ÙÃ³ Á¤·ùÀå Ãâ·Â
-double deg2rad(double);							// °¢µµ¸¦ ¶óµğ¾ÈÀ¸·Î º¯È¯
-void KnowToButton(GtkWidget*, int);				// Å¬¸¯ ¹öÆ° È®ÀÎ
-double Calc_Dis(double, double, double, double);	// °Å¸® °è»ê
-void Dis_Result(double, double, Near*, Bus*);		// °Å¸® ÆÇÁ¤ °á°ú
+// ì£¼ìš” ì¥ì†Œ ì„ íƒ ë²„íŠ¼ í™•ì¸ ì‹œ ì‚¬ìš©
+GPtrArray* place_station_button;
 
-int check_frame = 0;
+/* êµ¬í˜„ ì™„ë£Œ í•¨ìˆ˜ */
+void Read_File_Bus(char*, Bus*);				// íŒŒì¼ ì½ê¸° í•¨ìˆ˜(ë²„ìŠ¤)
+void Read_File_Place(char*, Place*);			// íŒŒì¼ ì½ê¸° í•¨ìˆ˜(ì¥ì†Œ)
+char* EncodingKR(char*);						// í•œê¸€ ì¸ì½”ë”© í•¨ìˆ˜
+void Close_Window(GtkWidget*, GPtrArray*);		// ì´ì „ í™”ë©´ ëŒì•„ê°€ëŠ” í•¨ìˆ˜
+void Main_Menu();								// ë©”ì¸ í™”ë©´ ì¶œë ¥
+void Bus_Menu(GtkWidget*, gpointer);			// ë²„ìŠ¤ ì„ íƒ ì¶œë ¥
+void Bus_Station(GtkWidget*);					// ë²„ìŠ¤ ì„ íƒ í›„ í•´ë‹¹ ì •ë¥˜ì¥ ì¶œë ¥
+void Place_Menu(GtkWidget*, gpointer);			// ì£¼ìš” ì¥ì†Œ ì¶œë ¥
+void Place_Bus_Station(GtkWidget*);				// ì£¼ìš” ì¥ì†Œ ê·¼ì²˜ ì •ë¥˜ì¥ ì¶œë ¥
+double deg2rad(double);							// ê°ë„ë¥¼ ë¼ë””ì•ˆìœ¼ë¡œ ë³€í™˜
+void KnowToButton(GtkWidget*, int);				// í´ë¦­ ì£¼ìš”ì¥ì†Œ í™•ì¸
+void KnowToButtonBUS(GtkWidget*, int);			// í´ë¦­ ë²„ìŠ¤ í™•ì¸
+double Calc_Dis(double, double, double, double);	// ê±°ë¦¬ ê³„ì‚°
+void Dis_Result(double, double, Near*, Bus*);		// ê±°ë¦¬ íŒì • ê²°ê³¼
+void Label_Inform(GtkWidget*);				// ì„ íƒ ë²„íŠ¼ ì •ë¥˜ì¥ ì •ë³´ ì €ì¥
+void KnowToLabel(GtkWidget*, int);			// ì •ë¥˜ì¥ ì„ íƒ í™•ì¸
 
-gint count = 0;
+/* ìŠ¤í¬ë¡¤ ìœˆë„ìš° ì¤‘ë³µ í™•ì¸ */
+char check_frame = 0;
 
-GtkWidget* mainwindow;
-GtkWidget* secondwindow;
-
-//void increase(GtkWidget* widget, gpointer label)
-//{
-//	count++;
-//
-//	sprintf(buf, "%d", count);
-//	gtk_label_set_text(label, buf);
-//}
-//
-//void decrease(GtkWidget* widget, gpointer label)
-//{
-//	count--;
-//
-//	sprintf(buf, "%d", count);
-//	gtk_label_set_text(label, buf);
-//}
+// í˜„ì¬ ëˆ„ë¥¸ ë²„íŠ¼ì´ start, end ì¸ì§€ í™•ì¸
+char check_start = 0;
+char check_end = 0;
 
 /// <summary>
-/// ¸ŞÀÎ ÇÔ¼ö. ÆÄÀÏ ÀĞ±â ½ÇÇà
+/// ë©”ì¸ í•¨ìˆ˜. íŒŒì¼ ì½ê¸° ì‹¤í–‰
 /// </summary>
 int main(int argc, char** argv)
 {
 	GtkWidget* label;
 	
-	// ¹ö½º Á¤º¸ ÀúÀå
+	#pragma region ë²„ìŠ¤ ì •ë³´ ì €ì¥
+
 	A = (Bus*)malloc(sizeof(Bus) * 100);
 	Read_File_Bus("512.csv", A);
+	
+	#pragma endregion
 
-	// ÁÖ¿ä Àå¼Ò ÀúÀå
+
+	#pragma region ì£¼ìš” ì¥ì†Œ ì •ë³´ ì €ì¥
+
 	main_place = (Place*)malloc(sizeof(Place));
 	Read_File_Place("place.csv", main_place);
 
-	// gtk ÃÊ±âÈ­
+	#pragma endregion
+
+	// gtk ì´ˆê¸°í™”
 	gtk_init(&argc, &argv);
 
 	Main_Menu();
 
-	//// »ö»ó Á¤º¸ ¼³Á¤
+	//// ìƒ‰ìƒ ì •ë³´ ì„¤ì • í…ŒìŠ¤íŠ¸
 	//c.red = 1.0;
 	//c.green = 0.0;
 	//c.blue = 0.0;
 	//c.alpha = 1.0;
-
-	//// ¹ö½º Á¤·ùÀå Ãâ·Â
-	//for (i = 0; i < 5; i++)
-	//{
-	//	a = gtk_button_new_with_label(A[i].station);
-	//	gtk_widget_override_color(GTK_WIDGET(a), GTK_STATE_NORMAL, &c);
-	//	gtk_widget_set_size_request(a, 80, 35);
-	//	gtk_fixed_put(GTK_FIXED(frame), a, 50, 130 + i * 50);
-	//}
-
-	//// ¹öÆ° Å¬¸¯ ÀÌº¥Æ®
-	//gtk_widget_show_all(mainwindow);
-
-	//g_signal_connect(mainwindow, "destroy", g_callback(gtk_main_quit), null);
-
-	//g_signal_connect(plus, "clicked",
-	//	g_callback(increase), label);
-
-	//g_signal_connect(minus, "clicked",
-	//	g_callback(open_window), mainwindow);
 
 	gtk_main();
 
@@ -151,7 +125,7 @@ int main(int argc, char** argv)
 }
 
 /// <summary>
-/// ÃÊ±â È­¸é(¸ŞÀÎ È­¸é) Ãâ·Â
+/// ì´ˆê¸° í™”ë©´(ë©”ì¸ í™”ë©´) ì¶œë ¥
 /// </summary>
 void Main_Menu()
 {
@@ -163,51 +137,62 @@ void Main_Menu()
 
 	char* temp_string;
 
-	// ¹öÆ° ui Å×½ºÆ®
+	// ë²„íŠ¼ ui í…ŒìŠ¤íŠ¸
 	/*GtkCssProvider* provider = gtk_css_provider_new();
 	gtk_css_provider_load_from_path(provider, "../GTKBusRoute/test.css", NULL);*/
 
-	// À©µµ¿ì Ã¢ »ı¼º ¹× ¼³Á¤
-	temp_string = EncodingKR("¹ö½º ³ë¼±µµ");
+	#pragma region ìœˆë„ìš° ì°½ ìƒì„±
+
+	// ìœˆë„ìš° ì°½ ìƒì„± ë° ì„¤ì •
+	temp_string = EncodingKR("ë²„ìŠ¤ ë…¸ì„ ë„");
 	main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_position(GTK_WINDOW(main_window), GTK_WIN_POS_CENTER);
 	gtk_window_set_default_size(GTK_WINDOW(main_window), 800, 600);
 	gtk_window_set_title(GTK_WINDOW(main_window), temp_string);
 
-	// ÇÁ·¹ÀÓ »ı¼º
+	// í”„ë ˆì„ ìƒì„±
 	frame = gtk_fixed_new();
 	gtk_container_add(GTK_CONTAINER(main_window), frame);
 
-	// ¹öÆ° »ı¼º ÈÄ ÇÁ·¹ÀÓ¿¡ °íÁ¤
-	temp_string = EncodingKR("¹ö½º Á¤·ùÀå");
+	#pragma endregion
+
+	#pragma region ë²„íŠ¼ ìƒì„±
+
+	// ë²„íŠ¼ ìƒì„± í›„ í”„ë ˆì„ì— ê³ ì •
+	temp_string = EncodingKR("ë²„ìŠ¤ ì •ë¥˜ì¥");
 	bus_button = gtk_button_new_with_label(temp_string);
 	/*context = gtk_widget_get_style_context(bus_button);
 	gtk_style_context_add_class(context, "enter_button");*/
 	gtk_widget_set_size_request(bus_button, 100, 75);
 	gtk_fixed_put(GTK_FIXED(frame), bus_button, 250, 400);
 	
-	// ¿øÇü ¹öÆ° Å×½ºÆ®
+	// ì›í˜• ë²„íŠ¼ í…ŒìŠ¤íŠ¸
 	/*gtk_style_context_add_class(
 		gtk_widget_get_style_context(GTK_WIDGET(bus_button)),
 		"circular"
 	);*/
 
-	temp_string = EncodingKR("ÁÖ¿ä Àå¼Ò");
+	temp_string = EncodingKR("ì£¼ìš” ì¥ì†Œ");
 	place_button = gtk_button_new_with_label(temp_string);
 	gtk_widget_set_size_request(place_button, 100, 75);
 	gtk_fixed_put(GTK_FIXED(frame), place_button, 450, 400);
+
+	#pragma endregion
 
 	gtk_widget_show_all(main_window);
 
 	g_signal_connect(main_window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
-	// ¹öÆ° Å¬¸¯ ÀÌº¥Æ®
+	#pragma region ë²„íŠ¼ í´ë¦­
+
 	g_signal_connect(bus_button, "clicked", G_CALLBACK(Bus_Menu), main_window);
 	g_signal_connect(place_button, "clicked", G_CALLBACK(Place_Menu), main_window);
+
+	#pragma endregion
 }
 
 /// <summary>
-/// ¹ö½º ¼±ÅÃ È­¸éÀ» Ãâ·Â
+/// ë²„ìŠ¤ ì„ íƒ í™”ë©´ì„ ì¶œë ¥
 /// </summary>
 /// <param name="widget"></param>
 /// <param name="window"></param>
@@ -215,16 +200,24 @@ void Bus_Menu(GtkWidget* widget, gpointer window)
 {
 	GtkWidget* frame;
 	GtkWidget* closeButton;
+	GtkWidget* busButton[10];
+	GtkWidget* label;
 
 	GPtrArray* temp;
 
+	GtkWidget* start_label;
+	GtkWidget* end_label;
+
 	char* temp_string;
 
-	// ÀÌÀü Ã¢À» ¼û±è
+	// ì´ì „ ì°½ì„ ìˆ¨ê¹€
 	gtk_widget_hide(window);
 
-	// »õ·Î¿î Ã¢ ¼³Á¤
-	temp_string = EncodingKR("¹ö½º Á¤·ùÀå");
+	check_frame = 0;
+
+	#pragma region ìƒˆ ì°½ ìƒì„±
+
+	temp_string = EncodingKR("ë²„ìŠ¤ ì •ë¥˜ì¥");
 	bus_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_position(GTK_WINDOW(bus_window), GTK_WIN_POS_CENTER);
 	gtk_window_set_default_size(GTK_WINDOW(bus_window), 800, 600);
@@ -233,11 +226,58 @@ void Bus_Menu(GtkWidget* widget, gpointer window)
 	frame = gtk_fixed_new();
 	gtk_container_add(GTK_CONTAINER(bus_window), frame);
 
-	// ¹öÆ° À§Ä¡ Á¶Á¤ ÇÊ¿ä
-	temp_string = EncodingKR("µÚ·Î °¡±â");
+	#pragma endregion
+
+	#pragma region ë²„ìŠ¤ ë²„íŠ¼ ìƒì„±
+
+	busButton[0] = gtk_button_new_with_label("");
+	gtk_widget_set_size_request(busButton[0], 1, 1);
+	label = gtk_label_new("105");
+	gtk_fixed_put(GTK_FIXED(frame), label, 10, 40);
+	gtk_fixed_put(GTK_FIXED(frame), busButton[0], 10, 5);
+
+	busButton[1] = gtk_button_new_with_label("");
+	gtk_widget_set_size_request(busButton[1], 1, 1);
+	label = gtk_label_new("512");
+	gtk_fixed_put(GTK_FIXED(frame), label, 10, 100);
+	gtk_fixed_put(GTK_FIXED(frame), busButton[1], 10, 65);
+
+	busButton[2] = gtk_button_new_with_label("");
+	gtk_widget_set_size_request(busButton[2], 1, 1);
+	label = gtk_label_new("717");
+	gtk_fixed_put(GTK_FIXED(frame), label, 10, 160);
+	gtk_fixed_put(GTK_FIXED(frame), busButton[2], 10, 125);
+
+	busButton[3] = gtk_button_new_with_label("");
+	gtk_widget_set_size_request(busButton[3], 1, 1);
+	label = gtk_label_new("823");
+	gtk_fixed_put(GTK_FIXED(frame), label, 10, 220);
+	gtk_fixed_put(GTK_FIXED(frame), busButton[3], 10, 185);
+
+	#pragma endregion
+
+	#pragma region ì¶œë„ì°© ì •ë¥˜ì¥ ì •ë³´ í‘œì‹œ
+
+	temp_string = EncodingKR("ì¶œë°œ ì§€ì : ");
+	start_label = gtk_label_new(temp_string);
+	gtk_fixed_put(GTK_FIXED(frame), start_label, 200, 500);
+
+	temp_string = EncodingKR("ë„ì°© ì§€ì : ");
+	end_label = gtk_label_new(temp_string);
+	gtk_fixed_put(GTK_FIXED(frame), end_label, 480, 500);
+
+	#pragma endregion
+
+	#pragma region ë’¤ë¡œ ê°€ê¸° ë²„íŠ¼
+
+	temp_string = EncodingKR("ë’¤ë¡œ ê°€ê¸°");
 	closeButton = gtk_button_new_with_label(temp_string);
 	gtk_widget_set_size_request(closeButton, 80, 35);
 	gtk_fixed_put(GTK_FIXED(frame), closeButton, 680, 550);
+
+	#pragma endregion
+
+	#pragma region ë’¤ë¡œ ê°€ê¸°
 
 	temp = g_ptr_array_new();
 	g_ptr_array_add(temp, bus_window);
@@ -245,12 +285,93 @@ void Bus_Menu(GtkWidget* widget, gpointer window)
 
 	g_signal_connect(closeButton, "clicked", G_CALLBACK(Close_Window), temp);
 
+	#pragma endregion
+
+	#pragma region ë²„ìŠ¤ í´ë¦­
+
+	bus_button_num = g_ptr_array_new();
+	g_ptr_array_add(bus_button_num, frame);
+
+	for (int j = 0; j < 4; j++) {
+		g_signal_connect(busButton[j], "clicked", G_CALLBACK(KnowToButtonBUS), j);
+	}
+
+	#pragma endregion
+
 	gtk_window_set_modal(GTK_WINDOW(bus_window), TRUE);
 	gtk_widget_show_all(bus_window);
 }
 
 /// <summary>
-/// ÁÖ¿ä Àå¼Ò ¼±ÅÃ È­¸éÀ» Ãâ·Â
+/// ë²„ìŠ¤ ì„ íƒ í›„ í•´ë‹¹ ë²„ìŠ¤ ì •ë¥˜ì¥ ì¶œë ¥
+/// </summary>
+/// <param name="widget"></param>
+void Bus_Station(GtkWidget* widget)
+{
+	GtkWidget* frame;
+	GtkWidget* table;
+	GtkWidget* button[100];
+
+	GPtrArray* temp;
+	Bus* curr;
+	GdkColor color;
+
+	Near* near_station = NULL;
+	Near* curr_result = NULL;
+	char buffer[32];
+	double temp_lat, temp_lon;
+	double comp_dis;
+	int i = 0;
+	int j;
+
+	if (check_frame == 1)
+		gtk_container_remove(GTK_CONTAINER(g_ptr_array_index(bus_button_num, 0)), bus_scrolled_window);
+
+	#pragma region ìŠ¤í¬ë¡¤ ìœˆë„ìš° ìƒì„±
+
+	bus_scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(bus_scrolled_window),
+		GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+
+	table = gtk_table_new(10, 10, FALSE);
+	gtk_table_set_row_spacings(GTK_TABLE(table), 20);
+	gtk_table_set_col_spacings(GTK_TABLE(table), 20);
+	gtk_scrolled_window_add_with_viewport(
+		GTK_SCROLLED_WINDOW(bus_scrolled_window), table);
+
+	#pragma endregion
+
+	curr = A->next;
+	while (curr != NULL)
+	{
+		button[i] = gtk_button_new_with_label(EncodingKR(curr->station));
+		gtk_widget_set_size_request(button[i], 20, 3);
+		gtk_table_attach_defaults(GTK_TABLE(table), button[i], 0, 1, i, i + 1);
+		gtk_widget_show(button[i]);
+		curr = curr->next;
+		i++;
+	}
+
+	gtk_fixed_put(GTK_FIXED(g_ptr_array_index(bus_button_num, 0)), bus_scrolled_window, 200, 10);
+	gtk_widget_set_size_request(bus_scrolled_window, 400, 400);
+
+	temp = g_ptr_array_new();
+	g_ptr_array_add(temp, bus_window);
+	g_ptr_array_add(temp, main_window);
+
+	for (j = 0; j < i; j++)
+	{
+		g_signal_connect(button[j], "clicked", G_CALLBACK(Close_Window), temp);
+	}
+
+	gtk_widget_show_all(bus_window);
+	g_ptr_array_remove_index(bus_button_num, 1);
+	check_frame = 1;
+
+}
+
+/// <summary>
+/// ì£¼ìš” ì¥ì†Œ ì„ íƒ í™”ë©´ì„ ì¶œë ¥
 /// </summary>
 /// <param name="widget"></param>
 /// <param name="window"></param>
@@ -266,6 +387,7 @@ void Place_Menu(GtkWidget* widget, gpointer window)
 	int j = 0;
 
 	GtkWidget* placeButton[20];
+	GtkWidget* resultButton;
 	GtkWidget* label;
 
 	GtkWidget* start_label;
@@ -277,7 +399,9 @@ void Place_Menu(GtkWidget* widget, gpointer window)
 
 	check_frame = 0;
 
-	temp_string = EncodingKR("ÁÖ¿ä Àå¼Ò");
+	#pragma region ìƒˆ ì°½ ìƒì„±
+
+	temp_string = EncodingKR("ì£¼ìš” ì¥ì†Œ");
 	place_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_position(GTK_WINDOW(place_window), GTK_WIN_POS_CENTER);
 	gtk_window_set_default_size(GTK_WINDOW(place_window), 800, 600);
@@ -286,7 +410,10 @@ void Place_Menu(GtkWidget* widget, gpointer window)
 	frame = gtk_fixed_new();
 	gtk_container_add(GTK_CONTAINER(place_window), frame);
 
-	// ÁÖ¿ä Àå¼Ò ¹öÆ° »ı¼º
+	#pragma endregion
+
+	#pragma region ì£¼ìš” ì¥ì†Œ ë²„íŠ¼ ìƒì„±
+
 	curr = main_place->next;
 	while (curr != NULL)
 	{
@@ -299,26 +426,45 @@ void Place_Menu(GtkWidget* widget, gpointer window)
 		i++;
 	}
 
-	// Ãâ¹ß ¹× µµÂø Á¤·ùÀå Á¤º¸ Ç¥½Ã
-	temp_string = EncodingKR("Ãâ¹ß ÁöÁ¡: ");
+	#pragma endregion
+
+	#pragma region ì¶œë„ì°© ì •ë¥˜ì¥ ì •ë³´ í‘œì‹œ
+
+	temp_string = EncodingKR("ì¶œë°œ ì§€ì : ");
 	start_label = gtk_label_new(temp_string);
 	gtk_fixed_put(GTK_FIXED(frame), start_label, 200, 500);
 
-	temp_string = EncodingKR("µµÂø ÁöÁ¡: ");
+	temp_string = EncodingKR("ë„ì°© ì§€ì : ");
 	end_label = gtk_label_new(temp_string);
 	gtk_fixed_put(GTK_FIXED(frame), end_label, 480, 500);
 
-	// ¹öÆ° À§Ä¡ Á¶Á¤ ÇÊ¿ä
-	temp_string = EncodingKR("µÚ·Î °¡±â");
+	#pragma endregion
+
+	#pragma region ë²„íŠ¼ ìƒì„±
+
+	temp_string = EncodingKR("ê²°ê³¼ í™•ì¸");
+	resultButton = gtk_button_new_with_label(temp_string);
+	gtk_widget_set_size_request(resultButton, 80, 35);
+	gtk_fixed_put(GTK_FIXED(frame), resultButton, 680, 500);
+
+	temp_string = EncodingKR("ë’¤ë¡œ ê°€ê¸°");
 	closeButton = gtk_button_new_with_label(temp_string);
 	gtk_widget_set_size_request(closeButton, 80, 35);
 	gtk_fixed_put(GTK_FIXED(frame), closeButton, 680, 550);
+
+	#pragma endregion
+
+	#pragma region ë’¤ë¡œ ê°€ê¸°
 
 	temp = g_ptr_array_new();
 	g_ptr_array_add(temp, place_window);
 	g_ptr_array_add(temp, main_window);
 
 	g_signal_connect(closeButton, "clicked", G_CALLBACK(Close_Window), temp);
+
+	#pragma endregion
+
+	#pragma region ì£¼ìš” ì¥ì†Œ í´ë¦­
 
 	place_button_num = g_ptr_array_new();
 	g_ptr_array_add(place_button_num, frame);
@@ -331,18 +477,28 @@ void Place_Menu(GtkWidget* widget, gpointer window)
 		j++;
 	}
 
+	#pragma endregion
+
+	// ê²°ê³¼ í™•ì¸ ë²„íŠ¼ í…ŒìŠ¤íŠ¸
+	if (check_start == 1 && check_end == 1)
+		g_signal_connect(resultButton, "clicked", G_CALLBACK(Main_Menu), NULL);
+
 	gtk_window_set_modal(GTK_WINDOW(place_window), TRUE);
 	gtk_widget_show_all(place_window);
 }
 
-// ¼­ºê À©µµ¿ì Å×½ºÆ® Áß
-// http://hoyoung2.blogspot.com/2011/06/gtk-tutorial.html Âü°í Áß
+/// <summary>
+/// ì£¼ìš” ì¥ì†Œ ê·¼ì²˜ì˜ ì •ë¥˜ì¥ ì¶œë ¥
+/// </summary>
+/// <param name="widget"></param>
+/// <param name="window"></param>
 void Place_Bus_Station(GtkWidget* widget)
 {
 	GtkWidget* table;
 	GtkWidget* button[10];
 
-	GPtrArray* temp;
+	GtkWidget* startlb;
+	GtkWidget* endlb;
 
 	GdkColor color;
 
@@ -352,6 +508,7 @@ void Place_Bus_Station(GtkWidget* widget)
 	char buffer[32];
 	double temp_lat, temp_lon;
 	double comp_dis;
+	char* temp_string;
 	int i;
 	int j;
 
@@ -360,6 +517,8 @@ void Place_Bus_Station(GtkWidget* widget)
 	
 	if (check_frame == 1)
 		gtk_container_remove(GTK_CONTAINER(g_ptr_array_index(place_button_num, 0)), place_scrolled_window);
+
+	#pragma region ìŠ¤í¬ë¡¤ ìœˆë„ìš° ìƒì„±
 
 	place_scrolled_window = gtk_scrolled_window_new(NULL, NULL);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(place_scrolled_window),
@@ -371,7 +530,11 @@ void Place_Bus_Station(GtkWidget* widget)
 	gtk_scrolled_window_add_with_viewport(
 		GTK_SCROLLED_WINDOW(place_scrolled_window), table);
 
-	// ¼±ÅÃÇÑ Àå¼Ò Ã£±â À§ÇÔ
+	#pragma endregion
+
+	#pragma region ê·¼ì²˜ ì¥ì†Œ ì¶œë ¥
+
+	// ì„ íƒí•œ ì¥ì†Œ ì°¾ê¸° ìœ„í•¨
 	curr = main_place->next;
 	for (i = 0; i < g_ptr_array_index(place_button_num, 1); i++)
 	{
@@ -383,14 +546,14 @@ void Place_Bus_Station(GtkWidget* widget)
 	near_station = (Near*)malloc(sizeof(Near) * 5);
 
 
-	/* ¹ö½º °³¼ö ¸¸Å­ */
+	/* ë²„ìŠ¤ ê°œìˆ˜ ë§Œí¼ */
 	Dis_Result(temp_lat, temp_lon, near_station, A);
 
 	curr_result = near_station->next;
 	i = 0;
 	while (curr_result != NULL)
 	{
-		button[i] = gtk_button_new_with_label(curr_result->station);
+		button[i] = gtk_button_new_with_label(EncodingKR(curr_result->station));
 		gtk_table_attach_defaults(GTK_TABLE(table), button[i],
 			0, 1, i, i + 1);
 		gtk_widget_show(button[i]);
@@ -398,7 +561,9 @@ void Place_Bus_Station(GtkWidget* widget)
 		i++;
 	}
 
-	// gptrarray»ç¿ë ¹öÆ° Ãâ·Â Å×½ºÆ®
+	#pragma endregion
+
+	// gptrarrayì‚¬ìš© ë²„íŠ¼ ì¶œë ¥ í…ŒìŠ¤íŠ¸
 	/*if (g_ptr_array_index(place_button_num, 1) == 0)
 		for (int i = 0; i < 10; i++)
 			for (int j = 0; j < 10; j++) {
@@ -426,16 +591,58 @@ void Place_Bus_Station(GtkWidget* widget)
 	//gtk_widget_modify_bg(table, GTK_STATE_NORMAL, &color);
 	//gtk_widget_override_color(table, GTK_STATE_NORMAL, &color);
 
-	temp = g_ptr_array_new();
+	#pragma region ì¶œë„ì°© ë¼ë²¨ ë³€ê²½
+
+	if (check_start == 0)
+	{
+		temp_string = EncodingKR("");
+		startlb = gtk_label_new(temp_string);
+	}
+	else
+		startlb = gtk_label_new(start);
+	gtk_fixed_put(GTK_FIXED(g_ptr_array_index(place_button_num, 0)), startlb, 270, 500);
+
+	if (check_end== 0)
+	{
+		temp_string = EncodingKR("");
+		endlb = gtk_label_new(temp_string);
+	}
+	else
+		endlb = gtk_label_new(end);
+	gtk_fixed_put(GTK_FIXED(g_ptr_array_index(place_button_num, 0)), endlb, 550, 500);
+
+	#pragma endregion
+
+	/*temp = g_ptr_array_new();
 	g_ptr_array_add(temp, place_window);
-	g_ptr_array_add(temp, main_window);
+	g_ptr_array_add(temp, main_window);*/
 	/*gtk_widget_grab_default(button);
 	gtk_widget_show(button);
 	gtk_widget_show(scrolled_window);*/
-	for (j = 0; j < i; j++)
+
+	#pragma region ì¶œë„ì°© ì •ë³´ ì €ì¥
+
+	place_station_button = g_ptr_array_new();
+	g_ptr_array_add(place_station_button, startlb);
+	g_ptr_array_add(place_station_button, endlb);
+	g_ptr_array_add(place_station_button, near_station);
+
+	// ìˆ˜ì • ì¤‘
+	curr_result = near_station->next;
+	j = 0;
+	while (curr_result != NULL)
+	{
+		g_signal_connect(button[j], "clicked", G_CALLBACK(KnowToLabel), j);
+		curr_result = curr_result->next;
+		j++;
+	}
+
+	#pragma endregion
+
+	/*for (j = 0; j < i; j++)
 	{
 		g_signal_connect(button[j], "clicked", G_CALLBACK(Close_Window), temp);
-	}
+	}*/
 
 	gtk_widget_show_all(place_window);
 	g_ptr_array_remove_index(place_button_num, 1);
@@ -444,9 +651,9 @@ void Place_Bus_Station(GtkWidget* widget)
 
 
 	/*
-	Å¬¸¯ÇÑ Àå¼Ò(num)ÀÇ À§µµ ¹× °æµµ
-	¸ğµç ¹ö½º ³ë¼±µµ¿Í ºñ±³ ÀÏÁ¤ °ª ÀÌÇÏ °ª Ãâ·Â
-	¹öÆ°À¸·Î Ãâ·Â
+	í´ë¦­í•œ ì¥ì†Œ(num)ì˜ ìœ„ë„ ë° ê²½ë„
+	ëª¨ë“  ë²„ìŠ¤ ë…¸ì„ ë„ì™€ ë¹„êµ ì¼ì • ê°’ ì´í•˜ ê°’ ì¶œë ¥
+	ë²„íŠ¼ìœ¼ë¡œ ì¶œë ¥
 	*/
 	/*int i;
 	double temp_lat;
@@ -488,7 +695,7 @@ void Place_Bus_Station(GtkWidget* widget)
 	gtk_container_add(GTK_CONTAINER(subwindow), tree_view);
 	gtk_tree_view_set_model(GTK_TREE_VIEW(tree_view), GTK_TREE_MODEL(model));
 
-	temp_string = EncodingKR("µÚ·Î °¡±â");
+	temp_string = EncodingKR("ë’¤ë¡œ ê°€ê¸°");
 	closeButton = gtk_button_new_with_label(temp_string);
 	gtk_widget_set_size_request(closeButton, 80, 35);
 	gtk_fixed_put(GTK_FIXED(tree_view), closeButton, 300, 300);
@@ -498,6 +705,55 @@ void Place_Bus_Station(GtkWidget* widget)
 
 }
 
+/// <summary>
+/// í´ë¦­í•œ ë²„íŠ¼ì˜ ì´ë¦„ì„ ë°›ì•„ì™€ ë¼ë²¨ì— ì ìš© ë° ì €ì¥
+/// ì£¼ìš” ì¥ì†Œ ê¸°ì¤€ ì½”ë”©
+/// </summary>
+/// <param name="widget"></param>
+/// <param name="window"></param>
+void Label_Inform(GtkWidget* widget)
+{
+	Near* temp;
+	Near* curr;
+	char* t;
+	int i;
+	temp = g_ptr_array_index(place_station_button, 2);
+	curr = temp->next;
+	for (i = 0; i < g_ptr_array_index(place_station_button, 3); i++)
+	{
+		curr = curr->next;
+	}
+	if (check_start == 0 && check_end == 0)
+	{
+		strcpy_s(start, sizeof(start), EncodingKR(curr->station));
+		gtk_label_set_text(g_ptr_array_index(place_station_button, 0), start);
+		check_start = 1;
+	}
+	else if (check_start == 1 && check_end == 0)
+	{
+		strcpy_s(end, sizeof(end), EncodingKR(curr->station));
+		if (strcmp(start, end) == 0)
+		{
+			strcpy_s(start, sizeof(start), "");
+			gtk_label_set_text(g_ptr_array_index(place_station_button, 0), start);
+			check_start = 0;
+		}
+		else
+		{
+			gtk_label_set_text(g_ptr_array_index(place_station_button, 1), end);
+			check_end = 1;
+		}
+	}
+	g_ptr_array_remove_index(place_station_button, 3);
+}
+
+/// <summary>
+/// ê±°ë¦¬ë¥¼ ê³„ì‚° í•˜ì—¬ ê·¼ì²˜ ì •ë¥˜ì¥ ì •ë³´ ì €ì¥
+/// </summary>
+/// <param name="temp_lat">ê¸°ì¤€ì´ ë˜ëŠ” ìœ„ë„</param>
+/// <param name="temp_lon">ê¸°ì¤€ì´ ë˜ëŠ” ê²½ë„</param>
+/// <param name="checking">ê·¼ì²˜ ì •ë¥˜ì¥ì„ ì €ì¥í•  êµ¬ì¡°ì²´ ì—°ê²°ë¦¬ìŠ¤íŠ¸</param>
+/// <param name="ch_bus">ë¹„êµí•  ë²„ìŠ¤</param>
 void Dis_Result(double temp_lat, double temp_lon, Near* checking, Bus* ch_bus)
 {
 	Bus* curr;
@@ -536,11 +792,24 @@ void Dis_Result(double temp_lat, double temp_lon, Near* checking, Bus* ch_bus)
 }
 
 /// <summary>
-/// ¹İº¹À¸·Î Ãâ·ÂÇÑ ¹öÆ°À» Å¬¸¯ÇßÀ» ¶§
-/// ¾î¶² ¹öÆ°À» Å¬¸¯Çß´ÂÁö È®ÀÎ
+/// ì£¼ìš” ì¥ì†Œ ì„ íƒ í™”ë©´ì—ì„œ
+/// í´ë¦­í•œ ì •ë¥˜ì¥ì˜ ì •ë³´ë¥¼ íŒŒì•…
 /// </summary>
 /// <param name="widget"></param>
-/// <param name="window"></param>
+/// <param name="button_num">í´ë¦­í•œ ë²„íŠ¼ì˜ ì¸ë±ìŠ¤ ì •ë³´</param>
+void KnowToLabel(GtkWidget* widget, int button_num)
+{
+	g_ptr_array_add(place_station_button, (gpointer)button_num);
+	Label_Inform(widget);
+}
+
+/// <summary>
+/// ë°˜ë³µìœ¼ë¡œ ì¶œë ¥í•œ ë²„íŠ¼ì„ í´ë¦­í–ˆì„ ë•Œ
+/// ì–´ë–¤ ë²„íŠ¼ì„ í´ë¦­í–ˆëŠ”ì§€ í™•ì¸
+/// ì£¼ìš” ì¥ì†Œì—ì„œ ì‚¬ìš©
+/// </summary>
+/// <param name="widget"></param>
+/// <param name="button_num">í´ë¦­í•œ ë²„íŠ¼ì˜ ì¸ë±ìŠ¤ ì •ë³´</param>
 void KnowToButton(GtkWidget* widget, int button_num)
 {
 	g_ptr_array_add(place_button_num, (gpointer)button_num);
@@ -548,23 +817,40 @@ void KnowToButton(GtkWidget* widget, int button_num)
 }
 
 /// <summary>
-/// ÀÌÀü È­¸éÀ¸·Î µ¹¾Æ°¡´Â ±â´ÉÀ» ÇÑ´Ù.
+/// ë°˜ë³µìœ¼ë¡œ ì¶œë ¥í•œ ë²„íŠ¼ì„ í´ë¦­í–ˆì„ ë•Œ
+/// ì–´ë–¤ ë²„íŠ¼ì„ í´ë¦­í–ˆëŠ”ì§€ í™•ì¸
+/// ë²„ìŠ¤ ì„ íƒì—ì„œ ì‚¬ìš©
 /// </summary>
 /// <param name="widget"></param>
-/// <param name="window">gpointer ¿©·¯°³¸¦ ¹Ş¾Æ¿À±â À§ÇÑ gpointer ¹è¿­</param>
+/// <param name="button_num">í´ë¦­í•œ ë²„íŠ¼ì˜ ì¸ë±ìŠ¤ ì •ë³´</param>
+void KnowToButtonBUS(GtkWidget* widget, int button_num)
+{
+	g_ptr_array_add(bus_button_num, (gpointer)button_num);
+	Bus_Station(widget);
+}
+
+/// <summary>
+/// ì´ì „ í™”ë©´ìœ¼ë¡œ ëŒì•„ê°€ëŠ” ê¸°ëŠ¥
+/// </summary>
+/// <param name="widget"></param>
+/// <param name="window">gpointer ì—¬ëŸ¬ê°œë¥¼ ë°›ì•„ì˜¤ê¸° ìœ„í•œ gpointer ë°°ì—´</param>
 void Close_Window(GtkWidget* widget, GPtrArray* window)
 {
 	gtk_widget_destroy(GTK_WIDGET(g_ptr_array_index(window, 0)));
 	gtk_widget_show(g_ptr_array_index(window, 1));
+	strcpy_s(start, sizeof(start), "");
+	strcpy_s(end, sizeof(end), "");
+	check_start = 0;
+	check_end = 0;
 }
 
 /// <summary>
-/// ÁÂÇ¥°£ °Å¸® °è»êÇÏ¿© ¸®ÅÏ
+/// ì¢Œí‘œê°„ ê±°ë¦¬ë¥¼ ê³„ì‚°í•˜ì—¬ ë¦¬í„´
 /// </summary>
-/// <param name="clicked_lat">Å¬¸¯ÇÑ Àå¼ÒÀÇ À§µµ</param>
-/// <param name="clicked_lon">Å¬¸¯ÇÑ Àå¼ÒÀÇ °æµµ</param>
-/// <param name="check_lat">ºñ±³ÇÒ Á¤·ùÀåÀÇ À§µµ</param>
-/// <param name="check_lon">ºñ±³ÇÒ Á¤·ùÀåÀÇ °æµµ</param>
+/// <param name="clicked_lat">í´ë¦­í•œ ì¥ì†Œì˜ ìœ„ë„</param>
+/// <param name="clicked_lon">í´ë¦­í•œ ì¥ì†Œì˜ ê²½ë„</param>
+/// <param name="check_lat">ë¹„êµí•  ì •ë¥˜ì¥ì˜ ìœ„ë„</param>
+/// <param name="check_lon">ë¹„êµí•  ì •ë¥˜ì¥ì˜ ê²½ë„</param>
 double Calc_Dis(double clicked_lat, double clicked_lon, double check_lat, double check_lon)
 {
 	double longitude = deg2rad(clicked_lon - check_lon);
@@ -581,19 +867,19 @@ double Calc_Dis(double clicked_lat, double clicked_lon, double check_lat, double
 }
 
 /// <summary>
-/// ¶óµğ¾È º¯È¯ ÇÔ¼ö
+/// ë¼ë””ì•ˆ ë³€í™˜ í•¨ìˆ˜
 /// </summary>
-/// <param name="degree">º¯È¯ÇÒ °¢µµ °ª</param>
+/// <param name="degree">ë³€í™˜í•  ê°ë„ ê°’</param>
 double deg2rad(double degree)
 {
 	return degree * M_PI / 180;
 }
 
 /// <summary>
-/// ¹ö½º Á¤º¸ ÆÄÀÏ ÀĞ±â ÇÔ¼ö
+/// ë²„ìŠ¤ ì •ë³´ íŒŒì¼ ì½ê¸° í•¨ìˆ˜
 /// </summary>
-/// <param name="name">ÀĞ¾î¿Ã ÆÄÀÏ ÀÌ¸§</param>
-/// <param name="bus_num">¹ö½º Á¤º¸¸¦ ÀúÀåÇÒ ±¸Á¶Ã¼</param>
+/// <param name="name">ì½ì–´ì˜¬ íŒŒì¼ ì´ë¦„</param>
+/// <param name="bus_num">ë²„ìŠ¤ ì •ë³´ë¥¼ ì €ì¥í•  êµ¬ì¡°ì²´</param>
 void Read_File_Bus(char* name, Bus* bus_num)
 {
 	FILE* bus_inform;
@@ -639,10 +925,10 @@ void Read_File_Bus(char* name, Bus* bus_num)
 }
 
 /// <summary>
-/// ÁÖ¿ä Àå¼Ò ÆÄÀÏ ÀĞ±â ÇÔ¼ö
+/// ì£¼ìš” ì¥ì†Œ íŒŒì¼ ì½ê¸° í•¨ìˆ˜
 /// </summary>
-/// <param name="name">ÀĞ¾î¿Ã ÆÄÀÏ ÀÌ¸§</param>
-/// <param name="place">Àå¼Ò Á¤º¸¸¦ ÀúÀåÇÒ ±¸Á¶Ã¼</param>
+/// <param name="name">ì½ì–´ì˜¬ íŒŒì¼ ì´ë¦„</param>
+/// <param name="place">ì¥ì†Œ ì •ë³´ë¥¼ ì €ì¥í•  êµ¬ì¡°ì²´</param>
 void Read_File_Place(char* name, Place* place)
 {
 	FILE* inform;
@@ -688,10 +974,10 @@ void Read_File_Place(char* name, Place* place)
 }
 
 /// <summary>
-/// ÇÑ±Û ÀÎÄÚµùÀ» À§ÇÑ ÇÔ¼ö
-/// ÇÑ±Û »ç¿ëÀü¿¡ º» ÇÔ¼ö »ç¿ë
+/// í•œê¸€ ì¸ì½”ë”©ì„ ìœ„í•œ í•¨ìˆ˜
+/// í•œê¸€ ì‚¬ìš©ì „ì— ë³¸ í•¨ìˆ˜ ì‚¬ìš©
 /// </summary>
-/// <param name="input">º¯È¯ÇÏ°íÀÚ ÇÏ´Â ÇÑ±¹¾î</param>
+/// <param name="input">ë³€í™˜í•˜ê³ ì í•˜ëŠ” í•œêµ­ì–´</param>
 char* EncodingKR(char* input)
 {
 	char* output;
