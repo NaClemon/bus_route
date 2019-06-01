@@ -13,6 +13,7 @@
 /* 버스 정거장 구조체 */
 typedef struct bus {
 	struct bus* next;
+	struct bus* back;
 	char station[255];
 	double longitude;
 	double latitude;
@@ -35,6 +36,19 @@ typedef struct nearp {
 	double latitude;
 }Near;
 
+/* 결과 구조체 */
+typedef struct detale_p
+{
+	Bus* search1; //출발
+	Bus* search2; //도착
+	Bus* search_s; //환승
+	Bus* search_f; //환승
+	int min;      //소요시간
+	char check_start; //출발에대해 back확인
+	char check_end;   
+
+}Detale_p;
+
 /* 버스 개수 만큼 전역 변수 설정 */
 Bus* A, * B, * C, * D;
 
@@ -44,6 +58,7 @@ Place* main_place;
 /* 출발, 도착 */
 char start[100];
 char end[100];
+Detale_p a;
 
 /* 화면 */
 GtkWidget* main_window;
@@ -54,10 +69,13 @@ GtkWidget* result_window;
 /* 스크롤 윈도우 */
 GtkWidget* place_scrolled_window;
 GtkWidget* bus_scrolled_window;
+GtkWidget* detale_scrolled_window;
+
 
 /* 버튼 확인 */
 GPtrArray* place_button_num;
 GPtrArray* bus_button_num;
+GPtrArray* detale_num;
 
 // 주요 장소 선택 버튼 확인 시 사용
 GPtrArray* place_station_button;
@@ -84,6 +102,7 @@ double deg2rad(double);								// 각도를 라디안으로 변환
 double Calc_Dis(double, double, double, double);	// 거리 계산
 void Dis_Result(double, double, Near*, Bus*);		// 거리 판정 결과
 void myCSS(void);									// css 파일 로드
+void Calc_Detale(Bus*, Bus*);                       // 거리계산 
 
 /* 스크롤 윈도우 중복 확인 */
 char check_frame = 0;
@@ -103,7 +122,7 @@ int main(int argc, char** argv)
 
 	A = (Bus*)malloc(sizeof(Bus) * 100);
 	Read_File_Bus("512.csv", A);
-	
+
 	#pragma endregion
 
 
@@ -1013,9 +1032,15 @@ void Read_File_Bus(char* name, Bus* bus_num)
 			temp_longitude = strtok_s(temp, ",\r\n", &temp);
 
 			if (i == 0)
+			{
 				bus_num->next = bus_list[i];
+				bus_num->back = NULL;
+			}
 			else
+			{
+				bus_list[i]->back = bus_list[i - 1];
 				bus_list[i - 1]->next = bus_list[i];
+			}
 
 			strcpy_s(bus_list[i]->station, sizeof(bus_list[i]->station), temp_station);
 			bus_list[i]->longitude = atof(temp_longitude);
@@ -1109,4 +1134,360 @@ char* EncodingKR(char* input)
 	iconv_close(it);
 
 	return output;
+}
+
+void Calc_Detale(Bus* start, Bus* end)
+{
+	Bus* search1 = A;       //start
+	Bus* search2 = A;       //end
+	int min = 9999;         //최단경로
+	int min_s = 1;          //최단경로 비교용 시간
+	double s_distence = 0;    //버스 이동거리
+	double f_distence = 0;    //버스 이동거리
+	double w_distence = 0;    //환승역까지 걸어가는 길이
+	Bus* Start = NULL;      //반복문1 ~4 
+	Bus* Finish = NULL;
+	Bus* Start_back = NULL;
+	Bus* Finish_back = NULL;
+	Bus* stemp = NULL;
+	Bus* ftemp = NULL;
+	char sp = '0', fp = '0';//환승여부
+
+	/*Bus* a = (Bus*)malloc(sizeof(Bus));
+	strcpy_s(a->station, sizeof(A->station), A->station);
+	Bus* a1 = a;
+	for (int i = 0; i < 80; i++)
+	{
+		if (search->next)
+		{
+			search = search->next;
+			Bus* a2 = (Bus*)malloc(sizeof(Bus));
+			strcpy_s(a2->station, sizeof(search->station), search->station);
+			a1->next = a2;
+		}
+		else
+			break;
+
+	}
+	a1->next = a;
+	//이작업을 A부터 모든 버스에 적용켜야 함 5/20 이종영
+
+
+	s_state = (char**)malloc(sizeof(char*)*80);
+	f_state = (char**)malloc(sizeof(char*) * 80);
+
+	for (int i = 0; i < 80; i++)
+	{
+		s_state[i] = (char*)malloc(sizeof(char) * 255);
+		f_state[i] = (char*)malloc(sizeof(char) * 255);
+	}
+	*/
+
+	//이작업을 A~모든 버스에 적용시켜야 함5/20 이종영
+	//시작 정류장 해당 버스찾기
+	search1 = A;
+	while (1)
+	{
+		if (strncmp(search1->station, start->station, sizeof(char) * 255))
+		{
+			Start = search1;
+			Start_back = search1;
+			stemp = search1;
+			a.search1 = search1;
+			sp = A;
+			break;
+		}
+		search1 = search1->next;
+		if (!search1)
+			break;
+	}
+	if (sp != 'A')
+	{
+		search1 = B;
+		while (1)
+		{
+			if (strncmp(search1->station, start->station, sizeof(char) * 255))
+			{
+				Start = search1;
+				Start_back = search1;
+				stemp = search1;
+				a.search1 = search1;
+				sp = 'B';
+				break;
+			}
+			search1 = search1->next;
+			if (!search1)
+				break;
+		}
+	}
+	if (sp != 'B')
+	{
+		search1 = C;
+		while (1)
+		{
+			if (strncmp(search1->station, start->station, sizeof(char) * 255))
+			{
+				Start = search1;
+				Start_back = search1;
+				stemp = search1;
+				a.search1 = search1;
+				sp = 'C';
+				break;
+			}
+			search1 = search1->next;
+			if (!search1)
+				break;
+		}
+	}
+	if (sp != 'C')
+	{
+		search1 = 'D';
+		while (1)
+		{
+			if (strncmp(search1->station, start->station, sizeof(char) * 255))
+			{
+				Start = search1;
+				Start_back = search1;
+				stemp = search1;
+				a.search1 = search1;
+				sp = 'D';
+				break;
+			}
+			search1 = search1->next;
+			if (!search1)
+				break;
+		}
+	}
+
+	//이작업을 A~모든 버스에 적용시켜야 함5/20 이종영
+	//도착 정류장 해당 버스찾기
+	search2 = A;
+	while (1)
+	{
+		if (strncmp(search2->station, end->station, sizeof(char) * 255))
+		{
+			Finish = search2;
+			Finish_back = search2;
+			ftemp = search2;
+			a.search2 = search2;
+			fp = A;
+			break;
+		}
+		search2 = search2->next;
+		if (!search2)
+			break;
+	}
+	if (fp != 'A')
+	{
+		search2 = B;
+		while (1)
+		{
+			if (strncmp(search2->station, end->station, sizeof(char) * 255))
+			{
+				Finish = search2;
+				Finish_back = search2;
+				ftemp = search2;
+				a.search2 = search2;
+				fp = 'B';
+				break;
+			}
+			search2 = search2->next;
+			if (!search2)
+				break;
+		}
+	}
+	if (fp != 'B')
+	{
+		search2 = C;
+		while (1)
+		{
+			if (strncmp(search2->station, end->station, sizeof(char) * 255))
+			{
+				Finish = search2;
+				Finish_back = search2;
+				ftemp = search2;
+				a.search2 = search2;
+				fp = 'C';
+				break;
+			}
+			search2 = search2->next;
+			if (!search2)
+				break;
+		}
+	}
+	if (fp != 'C')
+	{
+		search2 = D;
+		while (1)
+		{
+			if (strncmp(search2->station, end->station, sizeof(char) * 255))
+			{
+				Finish = search2;
+				Finish_back = search2;
+				ftemp = search2;
+				a.search2 = search2;
+				fp = 'D';
+				break;
+			}
+			search2 = search2->next;
+			if (!search2)
+				break;
+		}
+	}
+	if (sp == fp) //환승없을때 
+	{
+		a.check_end = '2';
+		//start~finish까지 출력
+		while (1) //back으로 가야할지 next로 가야할지
+		{
+			if (Start == NULL)//반대편에 있을 것이다.
+			{
+				a.check_start = '1';
+				while (Start_back != Finish)
+				{
+					stemp = Start_back;
+					Start_back = Start_back->back;
+					s_distence += Calc_Dis(Start_back->latitude, Start_back->longitude, stemp->latitude, stemp->longitude) + 1;
+				}
+				break;
+			}
+			if (Start == Finish)
+			{
+				a.check_start = '0';
+				break;
+			}
+			stemp = Start;
+			Start = Start->next;
+			if (Start == NULL)
+				s_distence = 0;
+			else
+				s_distence += Calc_Dis(Start->latitude, Start->longitude, stemp->latitude, stemp->longitude) + 1;
+		}
+		min = s_distence;
+		a.search_f = NULL;
+		a.search_s = NULL;
+		a.min = min;
+	}
+	else//환승없을때
+	{
+		//환승 정류장 찾기
+		while (1)
+		{
+			Start = search1;
+			Start_back = search1;
+			stemp = search1;
+			if (Finish)
+			{
+				while (1)
+				{
+					if (Start)
+					{
+						s_distence += Calc_Dis(Start->latitude, Start->longitude, stemp->latitude, stemp->longitude) + 1;
+						w_distence = Calc_Dis(Start->latitude, Start->longitude, Finish->latitude, Finish->longitude);
+						min_s = s_distence + f_distence + w_distence * 15;
+						if (min_s < min)
+						{
+							min = min_s;
+							a.check_start = '0'; // 출발 정류장에 대해 환승 정류장의 위치가 next 방향일때
+							a.check_end = '0';
+							a.min = min_s;
+							a.search_s = Start;
+							a.search_f = Finish;
+						}
+						stemp = Start;
+						Start = Start->next;
+						if (Start == NULL)
+						{
+							stemp = search1;
+							s_distence = -1;
+						}
+					}
+					else if (Start_back)
+					{
+						s_distence += Calc_Dis(Start_back->latitude, Start_back->longitude, stemp->latitude, stemp->longitude) + 1;
+						w_distence = Calc_Dis(Start_back->latitude, Start_back->longitude, Finish->latitude, Finish->longitude);
+						min_s = s_distence + f_distence + w_distence * 15;
+						if (min_s < min)
+						{
+							min = min_s;
+							a.check_start = '1'; // 출발 정류장에 대해 환승 정류정의 위치가 back방향일때
+							a.check_end = '0';
+							a.min = min_s;
+							a.search_s = Start_back;
+							a.search_f = Finish;
+						}
+						stemp = Start_back;
+						Start_back = Start_back->back;
+						if (Start_back == NULL)
+							s_distence = -1;
+					}
+					else
+						break;
+				}
+				ftemp = Finish;
+				Finish = Finish->next;
+				if (Finish == NULL)
+				{
+					ftemp = search2;
+					f_distence = 0;
+				}
+				else
+					f_distence += Calc_Dis(Finish->latitude, Finish->longitude, ftemp->latitude, ftemp->longitude) + 1;
+			}
+			else if (Finish_back)
+			{
+				while (1)
+				{
+					if (Start)
+					{
+						s_distence += Calc_Dis(Start->latitude, Start->longitude, stemp->latitude, stemp->longitude) + 1;
+						w_distence = Calc_Dis(Start->latitude, Start->longitude, Finish->latitude, Finish->longitude);
+						min_s = s_distence + f_distence + w_distence * 15;
+						if (min_s < min)
+						{
+							min = min_s;
+							a.check_start = '0';
+							a.check_end = '1';
+							a.min = min;
+							a.search_s = Start;
+							a.search_f = Finish_back;
+						}
+						stemp = Start;
+						Start = Start->next;
+						if (Start == NULL)
+						{
+							stemp = search1;
+							s_distence = -1;
+						}
+					}
+					else if (Start_back)
+					{
+						s_distence += Calc_Dis(Start_back->latitude, Start_back->longitude, stemp->latitude, stemp->longitude) + 1;
+						w_distence = Calc_Dis(Start_back->latitude, Start_back->longitude, Finish->latitude, Finish->longitude);
+						min_s = s_distence + f_distence + w_distence * 15;
+						if (min_s < min)
+						{
+							min = min_s;
+							a.check_start = '1';
+							a.check_end = '1';
+							a.min = min_s;
+							a.search_s = Start_back;
+							a.search_f = Finish_back;
+						}
+						stemp = Start_back;
+						Start_back = Start_back->back;
+					}
+					else
+						break;
+				}
+				ftemp = Finish_back;
+				Finish_back = Finish_back->back;
+				f_distence += Calc_Dis(Finish_back->latitude, Finish_back->longitude, ftemp->latitude, ftemp->longitude) + 1;
+			}
+			else
+				break;
+
+		}
+
+	}
 }
