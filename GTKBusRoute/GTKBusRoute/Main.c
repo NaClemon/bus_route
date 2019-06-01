@@ -1491,3 +1491,91 @@ void Calc_Detale(Bus* start, Bus* end)
 
 	}
 }
+void Detail_Result(GtkWidget* widget)
+{
+
+#pragma region 새 창 생성
+
+	GtkWidget* frame;
+	GtkWidget* table;
+	GtkWidget* button[100];
+	GtkWidget* button2[100];
+
+	Bus* curr;
+	
+	int i = 0;
+	int j;
+
+	if (check_frame == 1)
+		gtk_container_remove(GTK_CONTAINER(g_ptr_array_index(detale_num, 0)), detale_scrolled_window);
+
+#pragma region 스크롤 윈도우 생성
+
+	detale_scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(detale_scrolled_window),
+		GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+
+	table = gtk_table_new(10, 10, FALSE);
+	gtk_table_set_row_spacings(GTK_TABLE(table), 20);
+	gtk_table_set_col_spacings(GTK_TABLE(table), 20);
+	gtk_scrolled_window_add_with_viewport(
+		GTK_SCROLLED_WINDOW(detale_scrolled_window), table);
+
+#pragma endregion
+
+	curr = a.search1;
+	if (a.check_end == '2')
+	{
+		while (curr != a.search2)
+		{
+			button[i] = gtk_button_new_with_label(EncodingKR(curr->station));
+			gtk_widget_set_size_request(button[i], 20, 3);
+			gtk_table_attach_defaults(GTK_TABLE(table), button[i], i, i + 1, 0, 1);
+			gtk_widget_show(button[i]);
+			if (a.check_start = '0')
+				curr = curr->next;
+			else
+				curr = curr->back;
+			i++;
+		}
+	}
+	else
+	{
+		while (curr != a.search_s)
+		{
+			button[i] = gtk_button_new_with_label(EncodingKR(curr->station));
+			gtk_widget_set_size_request(button[i], 20, 3);
+			gtk_table_attach_defaults(GTK_TABLE(table), button[i], i, i + 1, 0, 1);
+			gtk_widget_show(button[i]);
+			if (a.check_start = '0')
+				curr = curr->next;
+			else
+				curr = curr->back;
+			i++;
+		}
+		button[i] = gtk_button_new_with_label(EncodingKR(curr->station));
+		gtk_widget_set_size_request(button[i], 20, 3);
+		gtk_table_attach_defaults(GTK_TABLE(table), button[i], i, i + 1, 0, 1);
+		gtk_widget_show(button[i]);
+
+		i = 0;
+		curr = a.search_f;
+		while (curr != a.search2)
+		{
+			button2[i] = gtk_button_new_with_label(EncodingKR(curr->station));
+			gtk_widget_set_size_request(button2[i], 20, 3);
+			gtk_table_attach_defaults(GTK_TABLE(table), button2[i], i, i + 1, 5, 6);
+			gtk_widget_show(button2[i]);
+			if (a.check_end = '1')
+				curr = curr->next;
+			else
+				curr = curr->back;
+			i++;
+		}
+	}
+
+	gtk_layout_put(GTK_LAYOUT(g_ptr_array_index(detale_num, 0)), detale_scrolled_window, 200, 10);
+	gtk_widget_set_size_request(detale_scrolled_window, 500, 400);
+
+
+}
