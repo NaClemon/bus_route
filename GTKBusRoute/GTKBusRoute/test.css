@@ -1,100 +1,248 @@
-#snip {
-  background: #00ff00;
-  border: none;
-  color: #ffffff;
-  font-family: 'Poppins', Arial, sans-serif;
-  font-size: 17.5px;
-  font-weight: 500;
+/* 메인 메뉴 버튼 */
+#bus_button {
+  background: linear-gradient(to right, #ffff4d, #ffffcc);
+  font-family: 'Roboto', Arial, sans-serif;
+  color: #262626;
+  padding: 0px 23px;
   margin: 15px 30px;
+  letter-spacing: 1.5px;
+  font-size: 1em;
+  font-weight: bold;
   outline: none;
-  padding: 0 43px 0 0;
-  font-family: FontAwesome;
-  background-color: #c72544;
-  padding: 1px 20px;
-  border-radius: 0 5px 5px 0;
-  -webkit-transition: all 0.15s ease-in;
-  transition: all 0.15s ease-in;
-}
-#snip span {
-  background-color: #c72544;
-  border-radius: 5px 0 0 5px;
-  padding: 10px 20px;
-  -webkit-transition: all 0.15s ease-in;
-  transition: all 0.15s ease-in;
+  font-size: 12px;
+  border: 3px solid #fff;
+  border-radius: 0px 15px 7px 15px;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  border-color: #ffff80;
 }
 
-#snip:hover span,
-#snip.hover span {
-  background-color: #ba2340;
+#bus_button:hover,
+#bus_button.hover {
+  border-color: #ff9933;
 }
 
-#snip:hover,
-#snip.hover {
-  margin-top: -5px;
-  background-color: #da3655;
-  box-shadow: -5px 10px 20px rgba(0, 0, 0, 0.5);
+#place_button {
+  background: linear-gradient(to right, #ffff4d, #ffffcc);
+  font-family: 'Roboto', Arial, sans-serif;
+  color: #262626;
+  padding: 0px 30px;
+  margin: 15px 30px;
+  letter-spacing: 1.5px;
+  font-size: 1em;
+  font-weight: bold;
+  outline: none;
+  font-size: 12px;
+  border: 3px solid #fff;
+  border-radius: 15px 0px 15px 7px;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  border-color: #ffff80;
 }
 
-
-
-#myGrid {
-    background-color: cyan;
-    border-style: solid;
-    border-color: black;
-    border-width: 1px;
+#place_button:hover,
+#place_button.hover {
+  border-color: #ff9933;
 }
 
-#myChildTop {
-    background-color: white;
+/* 버스 아이콘 버튼 */
+#bus105 {
+	background-image: url("base_bus.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	-webkit-transition-duration: 0.2s;
+	opacity: 0.7;
+}
+#bus105:active,
+#bus105.active,
+#bus105:focus,
+#bus105.focus {
+	background-image: url("105bus.png");
+	transition: all 0.2s;
+	opacity: 1;
 }
 
-#myButton_red{
-    background-color: red;
-    color: white;
-    font-family: DejaVu Sans;
-    font-style: normal;
+#bus512 {
+	background-image: url("base_bus.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	-webkit-transition-duration: 0.2s;
+	opacity: 0.7;
+}
+#bus512:active,
+#bus512.active,
+#bus512:focus,
+#bus512.focus {
+	background-image: url("512bus.png");
+	transition: all 0.2s;
+	opacity: 1;
+}
+
+#bus717 {
+	background-image: url("base_bus.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	-webkit-transition-duration: 0.2s;
+	opacity: 0.7;
+}
+#bus717:active,
+#bus717.active,
+#bus717:focus,
+#bus717.focus {
+	background-image: url("717bus.png");
+	transition: all 0.2s;
+	opacity: 1;
+}
+
+#bus823 {
+	background-image: url("base_bus.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	-webkit-transition-duration: 0.2s;
+	opacity: 0.7;
+}
+#bus823:active,
+#bus823.active,
+#bus823:focus,
+#bus823.focus {
+	background-image: url("823bus.png");
+	transition: all 0.2s;
+	opacity: 1;
+}
+
+/* 결과 확인, 뒤로 가기 */
+.back {
     font-weight: bold;
-    font-size: 20px;
-    border-radius: 15px;
+    padding: 0.25em 0.5em;
+    text-decoration: none;
+    color: #4d4d4d;
+    background: rgb(255, 166, 77);
+    border-radius: 15px 0px 0px 15px;
+    transition: .4s;
+  }
+.back:hover,
+.back.hover {
+    background: linear-gradient(to right, rgb(255, 51, 51) 25%, rgb(255, 166, 77));
 }
 
-#myButton_yellow{
-    background-color: yellow;
-    color: white;
-    font-family: DejaVu Sans;
-    font-style: normal;
+.result {
     font-weight: bold;
-    font-size: 20px;
-    border-radius: 15px;
+    padding: 0.25em 0.5em;
+    text-decoration: none;
+    color: #4d4d4d;
+    background: rgb(51, 255, 51);
+    border-radius: 0px 15px 15px 0px;
+    transition: .4s;
+  }
+.result:hover,
+.result.hover {
+    background: linear-gradient(to right, rgb(51, 255, 51), rgb(92, 214, 92) 40%);
 }
 
-#myButton_green{
-    background: green;
-    color: white;
-    font-family: DejaVu Sans;
-    font-style: normal;
+/* 리스트 버튼 */
+.105list {
+	color: #e6e6e6;
+	font-weight: bold;
+	background: #ff9999;
+	padding: 5px;
+	border-radius: 5px;
+	border: none;
+}
+.105list:hover,
+.105list.hover {
+	background: #737373;
+	letter-spacing: 1px;
+	-webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+	-moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+	transition: all 0.4s ease 0s;
+}
+.512list {
+	color: #e6e6e6;
+	font-weight: bold;
+	background: #009900;
+	padding: 5px;
+	border-radius: 5px;
+	border: none;
+}
+.512list:hover,
+.512list.hover {
+	background: #737373;
+	letter-spacing: 1px;
+	-webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+	-moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+	transition: all 0.4s ease 0s;
+}
+.717list {
+	color: #e6e6e6;
+	font-weight: bold;
+	background: #4d4dff;
+	padding: 5px;
+	border-radius: 5px;
+	border: none;
+}
+.717list:hover,
+.717list.hover {
+	background: #737373;
+	letter-spacing: 1px;
+	-webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+	-moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+	transition: all 0.4s ease 0s;
+}
+.823list {
+	color: #e6e6e6;
+	font-weight: bold;
+	background: #e69500;
+	padding: 5px;
+	border-radius: 5px;
+	border: none;
+}
+.823list:hover,
+.823list.hover {
+	background: #737373;
+	letter-spacing: 1px;
+	-webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+	-moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+	transition: all 0.4s ease 0s;
+}
+
+.place_btn{
+    padding: 0.2em 0.7em;
+    text-decoration: none;
+    border-radius: 4px;
+    color: #000000;
+	font-weight: bold;
+    background-image: linear-gradient(#6795fd 0%, #67ceff 100%);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.29);
+    border-bottom: solid 3px #5e7fca;
+  }
+.place_btn:active{
+    -ms-transform: translateY(4px);
+    -webkit-transform: translateY(4px);
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
+    border-bottom: none;
+}
+.near_btn{
     font-weight: bold;
-    font-size: 20px;
-    border-radius: 15px;
+    padding: 0.25em 0.5em;
+    text-decoration: none;
+    border-bottom: none;
+    border-left: solid 3px #668ad8;
+	border-top: none;
+	border-right: solid 3px #668ad8;
+    color: #668ad8;
+    transition: .4s;
+}
+.near_btn:hover {
+    padding-left: 0.7em;
+    padding-right: 0.3em;
 }
 
-#myButton_blue{
-    background-color: blue;
-    color: white;
-    font-family: DejaVu Sans;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 20px;
-    border-radius: 15px;
-}
-
-#myButton_red:hover,
-#myButton_yellow:hover,
-#myButton_green:hover,
-#myButton_blue:hover{
-   background-color: black;
-}
-
-#main_place {
-	background: #00ff00;
+/* 글씨체 */
+.label {
+	color: #d04764;
+	font-family: 'Lobster', cursive;
+	font-size: 15px;
+	font-weight: normal;
+	margin: 0 0 18px;
+	text-shadow: 1px 0 0 #fff;
 }
