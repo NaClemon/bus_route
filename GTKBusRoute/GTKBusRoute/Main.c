@@ -44,6 +44,7 @@ typedef struct detale_p
 	Bus* search_s; //환승
 	Bus* search_f; //환승
 	int min;      //소요시간
+	int min_d;
 	char check_start; //출발에대해 back확인
 	char check_end;   
 
@@ -805,6 +806,8 @@ void Result_Menu(GtkWidget* widget, gpointer* window)
 	GtkWidget* startb1;
 	GtkWidget* endb;
 	GtkWidget* endb1;
+	GtkWidget* trans;
+	GtkWidget* trans1;
 
 	GtkWidget* min;
 	GtkWidget* min1;
@@ -841,15 +844,45 @@ void Result_Menu(GtkWidget* widget, gpointer* window)
 	startb = gtk_label_new(temp_string);
 	labelstyle = gtk_widget_get_style_context(startb);
 	gtk_style_context_add_class(labelstyle, "label");
-	gtk_layout_put(GTK_LAYOUT(frame), startb, 20, 150);
+	gtk_layout_put(GTK_LAYOUT(frame), startb, 20, 50);
 
 	temp_string = EncodingKR(a.search1->station);
 	startb1 = gtk_label_new(temp_string);
 	gtk_widget_set_size_request(startb1, 20, 3);
 	labelstyle = gtk_widget_get_style_context(startb1);
 	gtk_style_context_add_class(labelstyle, "label");
-	gtk_layout_put(GTK_LAYOUT(frame), startb1, 100, 150);
+	gtk_layout_put(GTK_LAYOUT(frame), startb1, 100, 50);
 
+	if (a.check_end != '2')
+	{
+		temp_string = EncodingKR("환승 : ");
+		trans = gtk_label_new(temp_string);
+		labelstyle = gtk_widget_get_style_context(trans);
+		gtk_style_context_add_class(labelstyle, "label");
+		gtk_layout_put(GTK_LAYOUT(frame), trans, 20, 150);
+
+		temp_string = EncodingKR(a.search_s->station);
+		trans1 = gtk_label_new(temp_string);
+		gtk_widget_set_size_request(trans1, 20, 3);
+		labelstyle = gtk_widget_get_style_context(trans1);
+		gtk_style_context_add_class(labelstyle, "label");
+		gtk_layout_put(GTK_LAYOUT(frame), trans1, 100, 150);
+	}
+
+	else
+	{
+		temp_string = EncodingKR("환승 : ");
+		trans = gtk_label_new(temp_string);
+		labelstyle = gtk_widget_get_style_context(trans);
+		gtk_style_context_add_class(labelstyle, "label");
+		gtk_layout_put(GTK_LAYOUT(frame), trans, 20, 150);
+
+		temp_string = EncodingKR("x");
+		trans1 = gtk_label_new(temp_string);
+		labelstyle = gtk_widget_get_style_context(trans1);
+		gtk_style_context_add_class(labelstyle, "label");
+		gtk_layout_put(GTK_LAYOUT(frame), trans1, 100, 150);
+	}
 	
 	temp_string = EncodingKR("도착 : ");
 	endb = gtk_label_new(temp_string);
@@ -1624,15 +1657,16 @@ void Calc_Detale()
 				{
 					if (Start != NULL)
 					{
-						s_distence += Calc_Dis(Start->latitude, Start->longitude, stemp->latitude, stemp->longitude) + 1;
+						s_distence += Calc_Dis(Start->latitude, Start->longitude, stemp->latitude, stemp->longitude) +0.5;
 						w_distence = Calc_Dis(Start->latitude, Start->longitude, Finish->latitude, Finish->longitude);
-						min_s = s_distence/2 + f_distence/2 + w_distence * 15;
+						min_s = s_distence + f_distence + w_distence * 15;
 						if (min_s < min)
 						{
 							min = min_s;
 							a.check_start = '0'; // 출발 정류장에 대해 환승 정류장의 위치가 next 방향일때
 							a.check_end = '0';
 							a.min = min_s;
+							a.min_d = w_distence * 10;
 							a.search_s = Start;
 							a.search_f = Finish;
 						}
@@ -1646,15 +1680,16 @@ void Calc_Detale()
 					}
 					else if (Start_back != NULL)
 					{
-						s_distence += Calc_Dis(Start_back->latitude, Start_back->longitude, stemp->latitude, stemp->longitude) + 1;
+						s_distence += Calc_Dis(Start_back->latitude, Start_back->longitude, stemp->latitude, stemp->longitude) +0.5;
 						w_distence = Calc_Dis(Start_back->latitude, Start_back->longitude, Finish->latitude, Finish->longitude);
-						min_s = s_distence/2 + f_distence/2 + w_distence * 15;
+						min_s = s_distence + f_distence + w_distence * 15;
 						if (min_s < min)
 						{
 							min = min_s;
 							a.check_start = '1'; // 출발 정류장에 대해 환승 정류정의 위치가 back방향일때
 							a.check_end = '0';
 							a.min = min_s;
+							a.min_d = w_distence * 10;
 							a.search_s = Start_back;
 							a.search_f = Finish;
 						}
@@ -1682,15 +1717,16 @@ void Calc_Detale()
 				{
 					if (Start)
 					{
-						s_distence += Calc_Dis(Start->latitude, Start->longitude, stemp->latitude, stemp->longitude) + 1;
+						s_distence += Calc_Dis(Start->latitude, Start->longitude, stemp->latitude, stemp->longitude) +0.5;
 						w_distence = Calc_Dis(Start->latitude, Start->longitude, Finish_back->latitude, Finish_back->longitude);
-						min_s = s_distence/2 + f_distence/2 + w_distence * 15;
+						min_s = s_distence + f_distence + w_distence * 15;
 						if (min_s < min)
 						{
 							min = min_s;
 							a.check_start = '0';
 							a.check_end = '1';
 							a.min = min;
+							a.min_d = w_distence * 10;
 							a.search_s = Start;
 							a.search_f = Finish_back;
 						}
@@ -1704,15 +1740,16 @@ void Calc_Detale()
 					}
 					else if (Start_back)
 					{
-						s_distence += Calc_Dis(Start_back->latitude, Start_back->longitude, stemp->latitude, stemp->longitude) + 1;
+						s_distence += Calc_Dis(Start_back->latitude, Start_back->longitude, stemp->latitude, stemp->longitude) +0.5;
 						w_distence = Calc_Dis(Start_back->latitude, Start_back->longitude, Finish_back->latitude, Finish_back->longitude);
-						min_s = s_distence/2 + f_distence/2 + w_distence * 15;
+						min_s = s_distence + f_distence + w_distence * 15;
 						if (min_s < min)
 						{
 							min = min_s;
 							a.check_start = '1';
 							a.check_end = '1';
 							a.min = min_s;
+							a.min_d = w_distence * 10;
 							a.search_s = Start_back;
 							a.search_f = Finish_back;
 						}
@@ -1744,10 +1781,15 @@ void Detail_Result(GtkWidget* widget)
 	GtkWidget* button[100];
 	GtkWidget* button2[100];
 
+	GtkWidget* trans;
+	GtkWidget* trans1;
+	char* temp_string;
+	char* s[50];
 	Bus* curr;
 	
 	GtkStyleContext* listbt;
 	GtkStyleContext* listbt1;
+	GtkStyleContext* listbt2;
 
 	int i = 0;
 	int j;
@@ -1788,6 +1830,13 @@ void Detail_Result(GtkWidget* widget)
 				curr = curr->back;
 			i++;
 		}
+		i++;
+		button[i] = gtk_button_new_with_label(EncodingKR(curr->station));
+		gtk_widget_set_size_request(button[i], 20, 3);
+		listbt = gtk_widget_get_style_context(button[i]);
+		gtk_style_context_add_class(listbt, "list1");
+		gtk_table_attach_defaults(GTK_TABLE(table), button[i], i - 1, i, 0, 1);
+		gtk_widget_show(button[i]);
 	}
 	else
 	{
@@ -1797,7 +1846,7 @@ void Detail_Result(GtkWidget* widget)
 			gtk_widget_set_size_request(button[i], 20, 3);
 			listbt = gtk_widget_get_style_context(button[i]);
 			gtk_style_context_add_class(listbt, "list1");
-			gtk_table_attach_defaults(GTK_TABLE(table), button[i], i, i + 1, 0, 1);
+			gtk_table_attach_defaults(GTK_TABLE(table), button[i], i, i + 1, 0, 2);
 			gtk_widget_show(button[i]);
 			if (a.check_start == '0')
 				curr = curr->next;
@@ -1805,10 +1854,40 @@ void Detail_Result(GtkWidget* widget)
 				curr = curr->back;
 			i++;
 		}
+		i++;
 		button[i] = gtk_button_new_with_label(EncodingKR(curr->station));
 		gtk_widget_set_size_request(button[i], 20, 3);
-		gtk_table_attach_defaults(GTK_TABLE(table), button[i], i, i + 1, 0, 1);
+		listbt = gtk_widget_get_style_context(button[i]);
+		gtk_style_context_add_class(listbt, "list1");
+		gtk_table_attach_defaults(GTK_TABLE(table), button[i], i-1 , i, 0, 2);
 		gtk_widget_show(button[i]);
+		/*
+		i++;
+		temp_string = EncodingKR("환승 : ");
+		trans = gtk_label_new(temp_string);
+		gtk_widget_set_size_request(trans, 20, 3);
+		listbt2 = gtk_widget_get_style_context(trans);
+		gtk_style_context_add_class(listbt2, "label");
+		gtk_table_attach_defaults(GTK_LAYOUT(table), trans, 0,1,3,4);
+
+		button[i] = gtk_button_new_with_label(EncodingKR(curr->station));
+		gtk_widget_set_size_request(button[i], 20, 3);
+		gtk_table_attach_defaults(GTK_TABLE(table), button[i], 1, 2, 3, 4);
+		gtk_widget_show(button[i]);*/
+
+		temp_string = EncodingKR("도보 이동 : ");
+		trans = gtk_label_new(temp_string);
+		gtk_widget_set_size_request(trans, 5, 3);
+		listbt2 = gtk_widget_get_style_context(trans);
+		gtk_style_context_add_class(listbt2, "label");
+		gtk_table_attach_defaults(GTK_LAYOUT(table), trans, 0, 1, 3, 4);
+
+		sprintf(s, "%d", a.min_d);
+		trans1 = gtk_label_new(s);
+		gtk_widget_set_size_request(trans1, 5, 3);
+		listbt2 = gtk_widget_get_style_context(trans1);
+		gtk_style_context_add_class(listbt2, "label");
+		gtk_table_attach_defaults(GTK_LAYOUT(table), trans1, 1, 2, 3, 4);
 
 		i = 0;
 		curr = a.search_f;
@@ -1818,7 +1897,7 @@ void Detail_Result(GtkWidget* widget)
 			gtk_widget_set_size_request(button2[i], 20, 3);
 			listbt1 = gtk_widget_get_style_context(button2[i]);
 			gtk_style_context_add_class(listbt1, "list2");
-			gtk_table_attach_defaults(GTK_TABLE(table), button2[i], i, i + 1, 5, 6);
+			gtk_table_attach_defaults(GTK_TABLE(table), button2[i], i, i + 1, 4, 5);
 			gtk_widget_show(button2[i]);
 			if (a.check_end == '1')
 				curr = curr->next;
@@ -1826,9 +1905,16 @@ void Detail_Result(GtkWidget* widget)
 				curr = curr->back;
 			i++;
 		}
+		
+		i++;
+		button2[i] = gtk_button_new_with_label(EncodingKR(curr->station));
+		gtk_widget_set_size_request(button2[i], 20, 3);
+		gtk_table_attach_defaults(GTK_TABLE(table), button2[i], i-1, i , 4, 5);
+		gtk_widget_show(button2[i]);
+
 	}
 
-	gtk_layout_put(GTK_LAYOUT(g_ptr_array_index(detale_num, 0)), detale_scrolled_window, 200, 10);
+	gtk_layout_put(GTK_LAYOUT(g_ptr_array_index(detale_num, 0)), detale_scrolled_window, 300, 40);
 	gtk_widget_set_size_request(detale_scrolled_window, 500, 400);
 
 	gtk_widget_show_all(result_window);

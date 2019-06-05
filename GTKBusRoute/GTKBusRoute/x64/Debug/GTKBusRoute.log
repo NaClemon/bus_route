@@ -78,42 +78,52 @@ C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\x64-windows\include\gtk
 C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\x64-windows\include\gtk\deprecated\gtkstock.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\x64-windows\include\gtk\deprecated\gtkrc.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\x64-windows\include\gtk\deprecated\gtkuimanager.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(356): warning C4022: 'g_signal_connect_data': 실제 매개 변수 4의 포인터가 일치하지 않습니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(499): warning C4022: 'g_ptr_array_add': 실제 매개 변수 2의 포인터가 일치하지 않습니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(510): warning C4022: 'g_signal_connect_data': 실제 매개 변수 4의 포인터가 일치하지 않습니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(390): warning C4047: '초기화 중': 'int'의 간접 참조 수준이 'gpointer'과(와) 다릅니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(383): warning C4101: 'color' :참조되지 않은 지역 변수입니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(374): warning C4101: 'frame' :참조되지 않은 지역 변수입니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(646): warning C4022: 'g_signal_connect_data': 실제 매개 변수 4의 포인터가 일치하지 않습니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(537): warning C4101: 'label' :참조되지 않은 지역 변수입니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(709): warning C4047: '<': 'int'의 간접 참조 수준이 'gpointer'과(와) 다릅니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(779): warning C4022: 'g_signal_connect_data': 실제 매개 변수 4의 포인터가 일치하지 않습니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(683): warning C4101: 'comp_dis' :참조되지 않은 지역 변수입니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(681): warning C4101: 'buffer' :참조되지 않은 지역 변수입니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(673): warning C4101: 'color' :참조되지 않은 지역 변수입니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(822): warning C4047: '함수': 'GtkWidget *'의 간접 참조 수준이 'gpointer *'과(와) 다릅니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(822): warning C4024: 'gtk_widget_hide': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(944): warning C4047: '<': 'int'의 간접 참조 수준이 'gpointer'과(와) 다릅니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(940): warning C4101: 't' :참조되지 않은 지역 변수입니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(988): warning C4047: '<': 'int'의 간접 참조 수준이 'gpointer'과(와) 다릅니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(993): warning C4047: '==': 'Bus *'의 간접 참조 수준이 'int'과(와) 다릅니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(995): warning C4047: '<': 'int'의 간접 참조 수준이 'gpointer'과(와) 다릅니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1000): warning C4047: '==': 'Bus *'의 간접 참조 수준이 'int'과(와) 다릅니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1002): warning C4047: '<': 'int'의 간접 참조 수준이 'gpointer'과(와) 다릅니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1007): warning C4047: '==': 'Bus *'의 간접 참조 수준이 'int'과(와) 다릅니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1009): warning C4047: '<': 'int'의 간접 참조 수준이 'gpointer'과(와) 다릅니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(983): warning C4101: 't' :참조되지 않은 지역 변수입니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1128): warning C4312: '형식 캐스트': 'int'에서 더 큰 'gpointer'(으)로의 변환입니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1140): warning C4312: '형식 캐스트': 'int'에서 더 큰 'gpointer'(으)로의 변환입니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1153): warning C4312: '형식 캐스트': 'int'에서 더 큰 'gpointer'(으)로의 변환입니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1166): warning C4312: '형식 캐스트': 'int'에서 더 큰 'gpointer'(으)로의 변환입니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(357): warning C4022: 'g_signal_connect_data': 실제 매개 변수 4의 포인터가 일치하지 않습니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(500): warning C4022: 'g_ptr_array_add': 실제 매개 변수 2의 포인터가 일치하지 않습니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(511): warning C4022: 'g_signal_connect_data': 실제 매개 변수 4의 포인터가 일치하지 않습니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(391): warning C4047: '초기화 중': 'int'의 간접 참조 수준이 'gpointer'과(와) 다릅니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(384): warning C4101: 'color' :참조되지 않은 지역 변수입니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(375): warning C4101: 'frame' :참조되지 않은 지역 변수입니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(647): warning C4022: 'g_signal_connect_data': 실제 매개 변수 4의 포인터가 일치하지 않습니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(538): warning C4101: 'label' :참조되지 않은 지역 변수입니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(710): warning C4047: '<': 'int'의 간접 참조 수준이 'gpointer'과(와) 다릅니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(780): warning C4022: 'g_signal_connect_data': 실제 매개 변수 4의 포인터가 일치하지 않습니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(684): warning C4101: 'comp_dis' :참조되지 않은 지역 변수입니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(682): warning C4101: 'buffer' :참조되지 않은 지역 변수입니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(674): warning C4101: 'color' :참조되지 않은 지역 변수입니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(825): warning C4047: '함수': 'GtkWidget *'의 간접 참조 수준이 'gpointer *'과(와) 다릅니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(825): warning C4024: 'gtk_widget_hide': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(977): warning C4047: '<': 'int'의 간접 참조 수준이 'gpointer'과(와) 다릅니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(973): warning C4101: 't' :참조되지 않은 지역 변수입니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1021): warning C4047: '<': 'int'의 간접 참조 수준이 'gpointer'과(와) 다릅니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1026): warning C4047: '==': 'Bus *'의 간접 참조 수준이 'int'과(와) 다릅니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1028): warning C4047: '<': 'int'의 간접 참조 수준이 'gpointer'과(와) 다릅니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1033): warning C4047: '==': 'Bus *'의 간접 참조 수준이 'int'과(와) 다릅니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1035): warning C4047: '<': 'int'의 간접 참조 수준이 'gpointer'과(와) 다릅니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1040): warning C4047: '==': 'Bus *'의 간접 참조 수준이 'int'과(와) 다릅니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1042): warning C4047: '<': 'int'의 간접 참조 수준이 'gpointer'과(와) 다릅니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1016): warning C4101: 't' :참조되지 않은 지역 변수입니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1161): warning C4312: '형식 캐스트': 'int'에서 더 큰 'gpointer'(으)로의 변환입니다.
 C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1173): warning C4312: '형식 캐스트': 'int'에서 더 큰 'gpointer'(으)로의 변환입니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1357): warning C4101: 'k' :참조되지 않은 지역 변수입니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1608): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1629): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1651): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1687): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1709): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1753): warning C4101: 'j' :참조되지 않은 지역 변수입니다.
-C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1742): warning C4101: 'frame' :참조되지 않은 지역 변수입니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1186): warning C4312: '형식 캐스트': 'int'에서 더 큰 'gpointer'(으)로의 변환입니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1199): warning C4312: '형식 캐스트': 'int'에서 더 큰 'gpointer'(으)로의 변환입니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1206): warning C4312: '형식 캐스트': 'int'에서 더 큰 'gpointer'(으)로의 변환입니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1390): warning C4101: 'k' :참조되지 않은 지역 변수입니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1641): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1662): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1669): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1685): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1692): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1722): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1729): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1745): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1752): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1883): warning C4133: '함수': 'GtkLayout *'과(와) 'GtkTable *' 사이의 형식이 호환되지 않습니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1885): warning C4047: '함수': 'char *const '의 간접 참조 수준이 'char *[50]'과(와) 다릅니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1885): warning C4024: 'sprintf': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1886): warning C4047: '함수': 'const gchar *'의 간접 참조 수준이 'char *[50]'과(와) 다릅니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1886): warning C4024: 'gtk_label_new': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1890): warning C4133: '함수': 'GtkLayout *'과(와) 'GtkTable *' 사이의 형식이 호환되지 않습니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1795): warning C4101: 'j' :참조되지 않은 지역 변수입니다.
+C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\GTKBusRoute\Main.c(1779): warning C4101: 'frame' :참조되지 않은 지역 변수입니다.
   GTKBusRoute.vcxproj -> C:\Users\whdwl\Desktop\bus_route\GTKBusRoute\x64\Debug\GTKBusRoute.exe
