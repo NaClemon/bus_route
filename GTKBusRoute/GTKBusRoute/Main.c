@@ -806,7 +806,6 @@ void Result_Menu(GtkWidget* widget, gpointer* window)
 
 	if (check_start != 1 || check_end != 1)
 		return;
-	printf("%s\n%s", start, end);
 	gtk_widget_hide(window);
 
 	#pragma region 윈도우 창 생성
