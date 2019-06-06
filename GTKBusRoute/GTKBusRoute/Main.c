@@ -958,6 +958,7 @@ void Result_Menu(GtkWidget* widget, gpointer* window)
 	gtk_layout_put(GTK_LAYOUT(frame), detailButton, 25, 350);
 
 
+
 	#pragma endregion
 
 	// 수정 중
