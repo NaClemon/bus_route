@@ -800,6 +800,7 @@ void Result_Menu(GtkWidget* widget, gpointer* window)
 	GtkWidget* frame;
 	GtkWidget* closeButton;
 	GtkWidget* detailButton;
+	GtkWidget* image;
 
 	GtkWidget* resultlb;
 	GtkWidget* startb;
@@ -840,6 +841,9 @@ void Result_Menu(GtkWidget* widget, gpointer* window)
 
 	frame = gtk_layout_new(NULL, NULL);
 	gtk_container_add(GTK_CONTAINER(result_window), frame);
+	
+	image = gtk_image_new_from_file("resultbg.png");
+	gtk_layout_put(GTK_LAYOUT(frame), image, 0, 0);
 
 	temp_string = EncodingKR("경로");
 	resultlb = gtk_label_new(temp_string);
@@ -955,7 +959,8 @@ void Result_Menu(GtkWidget* widget, gpointer* window)
 	temp_string = EncodingKR("자세히 보기");
 	detailButton = gtk_button_new_with_label(temp_string);
 	gtk_widget_set_size_request(detailButton, 80, 35);
-	gtk_layout_put(GTK_LAYOUT(frame), detailButton, 25, 350);
+	gtk_widget_set_name(detailButton, "3dbtn");
+	gtk_layout_put(GTK_LAYOUT(frame), detailButton, 20, 325);
 
 
 
@@ -1806,17 +1811,21 @@ void Detail_Result(GtkWidget* widget)
 	GtkWidget* table;
 	GtkWidget* button[100];
 	GtkWidget* button2[100];
+	GtkWidget* labels[100];
+	GtkWidget* sublabels[100];
 
 	GtkWidget* trans;
 	GtkWidget* trans1;
 	char* temp_string;
 	char* s[50];
+	char tempstr[255];
 	Bus* curr;
 	
 	GtkStyleContext* listbt;
 	GtkStyleContext* listbt1;
 	GtkStyleContext* listbt2;
 
+	int tempi = 0;
 	int i = 0;
 	int j;
 
@@ -1844,12 +1853,17 @@ void Detail_Result(GtkWidget* widget)
 	{
 		while (curr != a.search2)
 		{
-			button[i] = gtk_button_new_with_label(EncodingKR(curr->station));
-			gtk_widget_set_size_request(button[i], 20, 3);
-			listbt = gtk_widget_get_style_context(button[i]);
-			gtk_style_context_add_class(listbt, "list");
-			gtk_table_attach_defaults(GTK_TABLE(table), button[i], i, i + 1, 0, 1);
-			gtk_widget_show(button[i]);
+			if (i != 0 && i % 5 == 0)
+				tempi += 1;
+			if (i == 0)
+				sprintf(tempstr, "%s", curr->station);
+			else
+				sprintf(tempstr, "-----▶   %s", curr->station);
+			labels[i] = gtk_label_new(EncodingKR(tempstr));
+			listbt2 = gtk_widget_get_style_context(labels[i]);
+			gtk_style_context_add_class(listbt2, "label");
+			gtk_table_attach_defaults(GTK_TABLE(table), labels[i], i - (tempi * 5), i - (tempi * 5) + 1, tempi, tempi + 1);
+
 			if (a.check_start == '0')
 				curr = curr->next;
 			else
@@ -1857,23 +1871,27 @@ void Detail_Result(GtkWidget* widget)
 			i++;
 		}
 		i++;
-		button[i] = gtk_button_new_with_label(EncodingKR(curr->station));
-		gtk_widget_set_size_request(button[i], 20, 3);
-		listbt = gtk_widget_get_style_context(button[i]);
-		gtk_style_context_add_class(listbt, "list1");
-		gtk_table_attach_defaults(GTK_TABLE(table), button[i], i - 1, i, 0, 1);
-		gtk_widget_show(button[i]);
+		sprintf(tempstr, "-----▶   %s", curr->station);
+		labels[i] = gtk_label_new(EncodingKR(tempstr));
+		listbt2 = gtk_widget_get_style_context(labels[i]);
+		gtk_style_context_add_class(listbt2, "label");
+		gtk_table_attach_defaults(GTK_TABLE(table), labels[i], (i - 1) - (tempi * 5), i - (tempi * 5), tempi, tempi + 1);
 	}
 	else
 	{
 		while (curr != a.search_s)
 		{
-			button[i] = gtk_button_new_with_label(EncodingKR(curr->station));
-			gtk_widget_set_size_request(button[i], 20, 3);
-			listbt = gtk_widget_get_style_context(button[i]);
-			gtk_style_context_add_class(listbt, "list1");
-			gtk_table_attach_defaults(GTK_TABLE(table), button[i], i, i + 1, 0, 2);
-			gtk_widget_show(button[i]);
+			if (i != 0 && i % 5 == 0)
+				tempi += 1;
+			if (i == 0)
+				sprintf(tempstr, "%s", curr->station);
+			else
+				sprintf(tempstr, "-----▶   %s", curr->station);
+			labels[i] = gtk_label_new(EncodingKR(tempstr));
+			listbt2 = gtk_widget_get_style_context(labels[i]);
+			gtk_style_context_add_class(listbt2, "label");
+			gtk_table_attach_defaults(GTK_TABLE(table), labels[i], i - (tempi * 5), i - (tempi * 5) + 1, tempi, tempi + 1);
+
 			if (a.check_start == '0')
 				curr = curr->next;
 			else
@@ -1881,50 +1899,42 @@ void Detail_Result(GtkWidget* widget)
 			i++;
 		}
 		i++;
-		button[i] = gtk_button_new_with_label(EncodingKR(curr->station));
-		gtk_widget_set_size_request(button[i], 20, 3);
-		listbt = gtk_widget_get_style_context(button[i]);
-		gtk_style_context_add_class(listbt, "list1");
-		gtk_table_attach_defaults(GTK_TABLE(table), button[i], i-1 , i, 0, 2);
-		gtk_widget_show(button[i]);
-		/*
-		i++;
-		temp_string = EncodingKR("환승 : ");
-		trans = gtk_label_new(temp_string);
-		gtk_widget_set_size_request(trans, 20, 3);
-		listbt2 = gtk_widget_get_style_context(trans);
+		sprintf(tempstr, "-----▶   %s", curr->station);
+		labels[i] = gtk_label_new(EncodingKR(tempstr));
+		listbt2 = gtk_widget_get_style_context(labels[i]);
 		gtk_style_context_add_class(listbt2, "label");
-		gtk_table_attach_defaults(GTK_LAYOUT(table), trans, 0,1,3,4);
+		gtk_table_attach_defaults(GTK_TABLE(table), labels[i], (i - 1) - (tempi * 5), i - (tempi * 5), tempi, tempi + 1);
 
-		button[i] = gtk_button_new_with_label(EncodingKR(curr->station));
-		gtk_widget_set_size_request(button[i], 20, 3);
-		gtk_table_attach_defaults(GTK_TABLE(table), button[i], 1, 2, 3, 4);
-		gtk_widget_show(button[i]);*/
-
-		temp_string = EncodingKR("도보 이동 : ");
+		temp_string = EncodingKR("도보 이동:");
 		trans = gtk_label_new(temp_string);
 		gtk_widget_set_size_request(trans, 5, 3);
 		listbt2 = gtk_widget_get_style_context(trans);
 		gtk_style_context_add_class(listbt2, "label");
 		gtk_table_attach_defaults(GTK_LAYOUT(table), trans, 0, 1, 3, 4);
 
-		sprintf(s, "%d", a.min_d);
-		trans1 = gtk_label_new(s);
+		sprintf(s, "%d분", a.min_d);
+		trans1 = gtk_label_new(EncodingKR(s));
 		gtk_widget_set_size_request(trans1, 5, 3);
 		listbt2 = gtk_widget_get_style_context(trans1);
 		gtk_style_context_add_class(listbt2, "label");
 		gtk_table_attach_defaults(GTK_LAYOUT(table), trans1, 1, 2, 3, 4);
 
 		i = 0;
+		tempi = 0;
 		curr = a.search_f;
 		while (curr != a.search2)
 		{
-			button2[i] = gtk_button_new_with_label(EncodingKR(curr->station));
-			gtk_widget_set_size_request(button2[i], 20, 3);
-			listbt1 = gtk_widget_get_style_context(button2[i]);
-			gtk_style_context_add_class(listbt1, "list2");
-			gtk_table_attach_defaults(GTK_TABLE(table), button2[i], i, i + 1, 4, 5);
-			gtk_widget_show(button2[i]);
+			if (i != 0 && i % 5 == 0)
+				tempi += 1;
+			if (i == 0)
+				sprintf(tempstr, "%s", curr->station);
+			else
+				sprintf(tempstr, "-----▶   %s", curr->station);
+			sublabels[i] = gtk_label_new(EncodingKR(tempstr));
+			listbt2 = gtk_widget_get_style_context(sublabels[i]);
+			gtk_style_context_add_class(listbt2, "label");
+			gtk_table_attach_defaults(GTK_TABLE(table), sublabels[i], i - (tempi * 5), i - (tempi * 5) + 1, tempi + 4, tempi + 5);
+
 			if (a.check_end == '1')
 				curr = curr->next;
 			else
@@ -1933,15 +1943,15 @@ void Detail_Result(GtkWidget* widget)
 		}
 		
 		i++;
-		button2[i] = gtk_button_new_with_label(EncodingKR(curr->station));
-		gtk_widget_set_size_request(button2[i], 20, 3);
-		gtk_table_attach_defaults(GTK_TABLE(table), button2[i], i-1, i , 4, 5);
-		gtk_widget_show(button2[i]);
-
+		sprintf(tempstr, "-----▶   %s", curr->station);
+		sublabels[i] = gtk_label_new(EncodingKR(tempstr));
+		listbt2 = gtk_widget_get_style_context(sublabels[i]);
+		gtk_style_context_add_class(listbt2, "label");
+		gtk_table_attach_defaults(GTK_TABLE(table), sublabels[i], (i - 1) - (tempi * 5), i - (tempi * 5), tempi + 4, tempi + 5);
 	}
 
-	gtk_layout_put(GTK_LAYOUT(g_ptr_array_index(detale_num, 0)), detale_scrolled_window, 300, 40);
-	gtk_widget_set_size_request(detale_scrolled_window, 500, 400);
+	gtk_layout_put(GTK_LAYOUT(g_ptr_array_index(detale_num, 0)), detale_scrolled_window, 200, 40);
+	gtk_widget_set_size_request(detale_scrolled_window, 600, 400);
 
 	gtk_widget_show_all(result_window);
 	check_frame = 1;
