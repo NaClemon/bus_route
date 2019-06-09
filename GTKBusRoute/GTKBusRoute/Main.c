@@ -1853,7 +1853,7 @@ void Detail_Result(GtkWidget* widget)
 	{
 		while (curr != a.search2)
 		{
-			if (i != 0 && i % 5 == 0)
+			if (i != 0 && i % 6 == 0)
 				tempi += 1;
 			if (i == 0)
 				sprintf(tempstr, "%s", curr->station);
@@ -1862,7 +1862,7 @@ void Detail_Result(GtkWidget* widget)
 			labels[i] = gtk_label_new(EncodingKR(tempstr));
 			listbt2 = gtk_widget_get_style_context(labels[i]);
 			gtk_style_context_add_class(listbt2, "label");
-			gtk_table_attach_defaults(GTK_TABLE(table), labels[i], i - (tempi * 5), i - (tempi * 5) + 1, tempi, tempi + 1);
+			gtk_table_attach_defaults(GTK_TABLE(table), labels[i], i - (tempi * 6), i - (tempi * 6) + 1, tempi, tempi + 1);
 
 			if (a.check_start == '0')
 				curr = curr->next;
@@ -1875,13 +1875,13 @@ void Detail_Result(GtkWidget* widget)
 		labels[i] = gtk_label_new(EncodingKR(tempstr));
 		listbt2 = gtk_widget_get_style_context(labels[i]);
 		gtk_style_context_add_class(listbt2, "label");
-		gtk_table_attach_defaults(GTK_TABLE(table), labels[i], (i - 1) - (tempi * 5), i - (tempi * 5), tempi, tempi + 1);
+		gtk_table_attach_defaults(GTK_TABLE(table), labels[i], (i - 1) - (tempi * 6), i - (tempi * 6), tempi, tempi + 1);
 	}
 	else
 	{
 		while (curr != a.search_s)
 		{
-			if (i != 0 && i % 5 == 0)
+			if (i != 0 && i % 6 == 0)
 				tempi += 1;
 			if (i == 0)
 				sprintf(tempstr, "%s", curr->station);
@@ -1890,7 +1890,7 @@ void Detail_Result(GtkWidget* widget)
 			labels[i] = gtk_label_new(EncodingKR(tempstr));
 			listbt2 = gtk_widget_get_style_context(labels[i]);
 			gtk_style_context_add_class(listbt2, "label");
-			gtk_table_attach_defaults(GTK_TABLE(table), labels[i], i - (tempi * 5), i - (tempi * 5) + 1, tempi, tempi + 1);
+			gtk_table_attach_defaults(GTK_TABLE(table), labels[i], i - (tempi * 6), i - (tempi * 6) + 1, tempi, tempi + 1);
 
 			if (a.check_start == '0')
 				curr = curr->next;
@@ -1903,28 +1903,28 @@ void Detail_Result(GtkWidget* widget)
 		labels[i] = gtk_label_new(EncodingKR(tempstr));
 		listbt2 = gtk_widget_get_style_context(labels[i]);
 		gtk_style_context_add_class(listbt2, "label");
-		gtk_table_attach_defaults(GTK_TABLE(table), labels[i], (i - 1) - (tempi * 5), i - (tempi * 5), tempi, tempi + 1);
+		gtk_table_attach_defaults(GTK_TABLE(table), labels[i], (i - 1) - (tempi * 6), i - (tempi * 6), tempi, tempi + 1);
 
 		temp_string = EncodingKR("도보 이동:");
 		trans = gtk_label_new(temp_string);
 		gtk_widget_set_size_request(trans, 5, 3);
 		listbt2 = gtk_widget_get_style_context(trans);
 		gtk_style_context_add_class(listbt2, "label");
-		gtk_table_attach_defaults(GTK_LAYOUT(table), trans, 0, 1, 3, 4);
+		gtk_table_attach_defaults(GTK_LAYOUT(table), trans, 0, 1, tempi + 1, tempi + 2);
 
 		sprintf(s, "%d분", a.min_d);
 		trans1 = gtk_label_new(EncodingKR(s));
 		gtk_widget_set_size_request(trans1, 5, 3);
 		listbt2 = gtk_widget_get_style_context(trans1);
 		gtk_style_context_add_class(listbt2, "label");
-		gtk_table_attach_defaults(GTK_LAYOUT(table), trans1, 1, 2, 3, 4);
+		gtk_table_attach_defaults(GTK_LAYOUT(table), trans1, 1, 2, tempi + 1, tempi + 2);
 
 		i = 0;
 		tempi = 0;
 		curr = a.search_f;
 		while (curr != a.search2)
 		{
-			if (i != 0 && i % 5 == 0)
+			if (i != 0 && i % 6 == 0)
 				tempi += 1;
 			if (i == 0)
 				sprintf(tempstr, "%s", curr->station);
@@ -1933,7 +1933,7 @@ void Detail_Result(GtkWidget* widget)
 			sublabels[i] = gtk_label_new(EncodingKR(tempstr));
 			listbt2 = gtk_widget_get_style_context(sublabels[i]);
 			gtk_style_context_add_class(listbt2, "label");
-			gtk_table_attach_defaults(GTK_TABLE(table), sublabels[i], i - (tempi * 5), i - (tempi * 5) + 1, tempi + 4, tempi + 5);
+			gtk_table_attach_defaults(GTK_TABLE(table), sublabels[i], i - (tempi * 6), i - (tempi * 6) + 1, tempi + 5, tempi + 6);
 
 			if (a.check_end == '1')
 				curr = curr->next;
@@ -1947,7 +1947,7 @@ void Detail_Result(GtkWidget* widget)
 		sublabels[i] = gtk_label_new(EncodingKR(tempstr));
 		listbt2 = gtk_widget_get_style_context(sublabels[i]);
 		gtk_style_context_add_class(listbt2, "label");
-		gtk_table_attach_defaults(GTK_TABLE(table), sublabels[i], (i - 1) - (tempi * 5), i - (tempi * 5), tempi + 4, tempi + 5);
+		gtk_table_attach_defaults(GTK_TABLE(table), sublabels[i], (i - 1) - (tempi * 6), i - (tempi * 6), tempi + 5, tempi + 6);
 	}
 
 	gtk_layout_put(GTK_LAYOUT(g_ptr_array_index(detale_num, 0)), detale_scrolled_window, 200, 40);
