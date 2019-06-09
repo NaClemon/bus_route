@@ -47,6 +47,8 @@ typedef struct detale_p
 	int min_d;
 	char check_start; //출발에대해 back확인
 	char check_end;   
+	char start_name[20];
+	char end_name[20];
 
 }Detale_p;
 
@@ -1504,6 +1506,7 @@ void Calc_Detale()
 			stemp = search1;
 			a.search1 = search1;
 			sp = 'A';
+			strcpy(a.start_name, "출발: 512번");
 			break;
 		}
 		search1 = search1->next;
@@ -1522,6 +1525,7 @@ void Calc_Detale()
 				stemp = search1;
 				a.search1 = search1;
 				sp = 'B';
+				strcpy(a.start_name, "출발: 105번");
 				break;
 			}
 			search1 = search1->next;
@@ -1541,6 +1545,7 @@ void Calc_Detale()
 				stemp = search1;
 				a.search1 = search1;
 				sp = 'C';
+				strcpy(a.start_name, "출발: 717번");
 				break;
 			}
 			search1 = search1->next;
@@ -1560,6 +1565,7 @@ void Calc_Detale()
 				stemp = search1;
 				a.search1 = search1;
 				sp = 'D';
+				strcpy(a.start_name, "출발: 823번");
 				break;
 			}
 			search1 = search1->next;
@@ -1580,6 +1586,7 @@ void Calc_Detale()
 			ftemp = search2;
 			a.search2 = search2;
 			fp = 'A';
+			strcpy(a.end_name, "환승: 512번");
 			break;
 		}
 		search2 = search2->next;
@@ -1598,6 +1605,7 @@ void Calc_Detale()
 				ftemp = search2;
 				a.search2 = search2;
 				fp = 'B';
+				strcpy(a.end_name, "환승: 105번");
 				break;
 			}
 			search2 = search2->next;
@@ -1617,6 +1625,7 @@ void Calc_Detale()
 				ftemp = search2;
 				a.search2 = search2;
 				fp = 'C';
+				strcpy(a.end_name, "환승: 717번");
 				break;
 			}
 			search2 = search2->next;
@@ -1636,6 +1645,7 @@ void Calc_Detale()
 				ftemp = search2;
 				a.search2 = search2;
 				fp = 'D';
+				strcpy(a.end_name, "환승: 823번");
 				break;
 			}
 			search2 = search2->next;
@@ -1691,7 +1701,7 @@ void Calc_Detale()
 				{
 					if (Start != NULL)
 					{
-						s_distence += Calc_Dis(Start->latitude, Start->longitude, stemp->latitude, stemp->longitude) +0.5;
+						s_distence += Calc_Dis(Start->latitude, Start->longitude, stemp->latitude, stemp->longitude) +1;
 						w_distence = Calc_Dis(Start->latitude, Start->longitude, Finish->latitude, Finish->longitude);
 						min_s = s_distence + f_distence + w_distence * 15;
 						if (min_s < min)
@@ -1700,7 +1710,7 @@ void Calc_Detale()
 							a.check_start = '0'; // 출발 정류장에 대해 환승 정류장의 위치가 next 방향일때
 							a.check_end = '0';
 							a.min = min_s;
-							a.min_d = w_distence * 10;
+							a.min_d = w_distence * 15;
 							a.search_s = Start;
 							a.search_f = Finish;
 						}
@@ -1714,7 +1724,7 @@ void Calc_Detale()
 					}
 					else if (Start_back != NULL)
 					{
-						s_distence += Calc_Dis(Start_back->latitude, Start_back->longitude, stemp->latitude, stemp->longitude) +0.5;
+						s_distence += Calc_Dis(Start_back->latitude, Start_back->longitude, stemp->latitude, stemp->longitude) +1;
 						w_distence = Calc_Dis(Start_back->latitude, Start_back->longitude, Finish->latitude, Finish->longitude);
 						min_s = s_distence + f_distence + w_distence * 15;
 						if (min_s < min)
@@ -1723,7 +1733,7 @@ void Calc_Detale()
 							a.check_start = '1'; // 출발 정류장에 대해 환승 정류정의 위치가 back방향일때
 							a.check_end = '0';
 							a.min = min_s;
-							a.min_d = w_distence * 10;
+							a.min_d = w_distence * 15;
 							a.search_s = Start_back;
 							a.search_f = Finish;
 						}
@@ -1751,7 +1761,7 @@ void Calc_Detale()
 				{
 					if (Start)
 					{
-						s_distence += Calc_Dis(Start->latitude, Start->longitude, stemp->latitude, stemp->longitude) +0.5;
+						s_distence += Calc_Dis(Start->latitude, Start->longitude, stemp->latitude, stemp->longitude) +1;
 						w_distence = Calc_Dis(Start->latitude, Start->longitude, Finish_back->latitude, Finish_back->longitude);
 						min_s = s_distence + f_distence + w_distence * 15;
 						if (min_s < min)
@@ -1760,7 +1770,7 @@ void Calc_Detale()
 							a.check_start = '0';
 							a.check_end = '1';
 							a.min = min;
-							a.min_d = w_distence * 10;
+							a.min_d = w_distence * 15;
 							a.search_s = Start;
 							a.search_f = Finish_back;
 						}
@@ -1774,7 +1784,7 @@ void Calc_Detale()
 					}
 					else if (Start_back)
 					{
-						s_distence += Calc_Dis(Start_back->latitude, Start_back->longitude, stemp->latitude, stemp->longitude) +0.5;
+						s_distence += Calc_Dis(Start_back->latitude, Start_back->longitude, stemp->latitude, stemp->longitude) +1;
 						w_distence = Calc_Dis(Start_back->latitude, Start_back->longitude, Finish_back->latitude, Finish_back->longitude);
 						min_s = s_distence + f_distence + w_distence * 15;
 						if (min_s < min)
@@ -1783,7 +1793,7 @@ void Calc_Detale()
 							a.check_start = '1';
 							a.check_end = '1';
 							a.min = min_s;
-							a.min_d = w_distence * 10;
+							a.min_d = w_distence * 15;
 							a.search_s = Start_back;
 							a.search_f = Finish_back;
 						}
@@ -1801,6 +1811,11 @@ void Calc_Detale()
 			else
 				break;
 
+		}
+		if (a.min_d > 30)
+		{
+			a.min = a.min - a.min_d+10;
+			a.min_d = 10;
 		}
 
 	}
@@ -1820,7 +1835,7 @@ void Detail_Result(GtkWidget* widget)
 	char* s[50];
 	char tempstr[255];
 	Bus* curr;
-	
+
 	GtkStyleContext* listbt;
 	GtkStyleContext* listbt1;
 	GtkStyleContext* listbt2;
@@ -1853,21 +1868,32 @@ void Detail_Result(GtkWidget* widget)
 	{
 		while (curr != a.search2)
 		{
-			if (i != 0 && i % 5 == 0)
+			if (i != 0 && i % 6 == 0)
 				tempi += 1;
 			if (i == 0)
-				sprintf(tempstr, "%s", curr->station);
+			{
+				sprintf(tempstr, "%s", a.start_name);
+				labels[i] = gtk_label_new(EncodingKR(tempstr));
+				listbt2 = gtk_widget_get_style_context(labels[i]);
+				gtk_style_context_add_class(listbt2, "label");
+				gtk_table_attach_defaults(GTK_TABLE(table), labels[i], i - (tempi * 6), i - (tempi * 6) + 1, tempi, tempi + 1);
+			}
 			else
-				sprintf(tempstr, "-----▶   %s", curr->station);
-			labels[i] = gtk_label_new(EncodingKR(tempstr));
-			listbt2 = gtk_widget_get_style_context(labels[i]);
-			gtk_style_context_add_class(listbt2, "label");
-			gtk_table_attach_defaults(GTK_TABLE(table), labels[i], i - (tempi * 5), i - (tempi * 5) + 1, tempi, tempi + 1);
+			{
+				if (i == 1)
+					sprintf(tempstr, "%s", curr->station);
+				else
+					sprintf(tempstr, "-----▶   %s", curr->station);
+				labels[i] = gtk_label_new(EncodingKR(tempstr));
+				listbt2 = gtk_widget_get_style_context(labels[i]);
+				gtk_style_context_add_class(listbt2, "label");
+				gtk_table_attach_defaults(GTK_TABLE(table), labels[i], i - (tempi * 6)-1, i - (tempi * 6) , tempi+1, tempi + 2);
 
-			if (a.check_start == '0')
-				curr = curr->next;
-			else
-				curr = curr->back;
+				if (a.check_start == '0')
+					curr = curr->next;
+				else
+					curr = curr->back;
+			}
 			i++;
 		}
 		i++;
@@ -1875,79 +1901,102 @@ void Detail_Result(GtkWidget* widget)
 		labels[i] = gtk_label_new(EncodingKR(tempstr));
 		listbt2 = gtk_widget_get_style_context(labels[i]);
 		gtk_style_context_add_class(listbt2, "label");
-		gtk_table_attach_defaults(GTK_TABLE(table), labels[i], (i - 1) - (tempi * 5), i - (tempi * 5), tempi, tempi + 1);
+		gtk_table_attach_defaults(GTK_TABLE(table), labels[i], (i - 2) - (tempi * 6), i - (tempi * 6)-1, tempi+1, tempi + 2);
 	}
 	else
 	{
 		while (curr != a.search_s)
 		{
-			if (i != 0 && i % 5 == 0)
+			if (i != 0 && i % 6 == 0)
 				tempi += 1;
 			if (i == 0)
-				sprintf(tempstr, "%s", curr->station);
+			{
+				sprintf(tempstr, "%s", a.start_name);
+				labels[i] = gtk_label_new(EncodingKR(tempstr));
+				listbt2 = gtk_widget_get_style_context(labels[i]);
+				gtk_style_context_add_class(listbt2, "label");
+				gtk_table_attach_defaults(GTK_TABLE(table), labels[i], i - (tempi * 6), i - (tempi * 6) + 1, tempi, tempi + 1);
+			}
 			else
-				sprintf(tempstr, "-----▶   %s", curr->station);
-			labels[i] = gtk_label_new(EncodingKR(tempstr));
-			listbt2 = gtk_widget_get_style_context(labels[i]);
-			gtk_style_context_add_class(listbt2, "label");
-			gtk_table_attach_defaults(GTK_TABLE(table), labels[i], i - (tempi * 5), i - (tempi * 5) + 1, tempi, tempi + 1);
+			{
+				if (i == 1)
+					sprintf(tempstr, "%s", curr->station);
+				else
+					sprintf(tempstr, "-----▶   %s", curr->station);
+				labels[i] = gtk_label_new(EncodingKR(tempstr));
+				listbt2 = gtk_widget_get_style_context(labels[i]);
+				gtk_style_context_add_class(listbt2, "label");
+				gtk_table_attach_defaults(GTK_TABLE(table), labels[i], i - (tempi * 6)-1, i - (tempi * 6) , tempi+1, tempi+2 );
 
-			if (a.check_start == '0')
-				curr = curr->next;
-			else
-				curr = curr->back;
+				if (a.check_start == '0')
+					curr = curr->next;
+				else
+					curr = curr->back;
+			}
 			i++;
+
 		}
 		i++;
 		sprintf(tempstr, "-----▶   %s", curr->station);
 		labels[i] = gtk_label_new(EncodingKR(tempstr));
 		listbt2 = gtk_widget_get_style_context(labels[i]);
 		gtk_style_context_add_class(listbt2, "label");
-		gtk_table_attach_defaults(GTK_TABLE(table), labels[i], (i - 1) - (tempi * 5), i - (tempi * 5), tempi, tempi + 1);
+		gtk_table_attach_defaults(GTK_TABLE(table), labels[i], (i - 1) - (tempi * 6)-1, i - (tempi * 6)-1, tempi+1, tempi+2 );
 
 		temp_string = EncodingKR("도보 이동:");
 		trans = gtk_label_new(temp_string);
 		gtk_widget_set_size_request(trans, 5, 3);
 		listbt2 = gtk_widget_get_style_context(trans);
 		gtk_style_context_add_class(listbt2, "label");
-		gtk_table_attach_defaults(GTK_LAYOUT(table), trans, 0, 1, 3, 4);
+		gtk_table_attach_defaults(GTK_LAYOUT(table), trans, 0, 1, tempi + 2, tempi + 3);
 
 		sprintf(s, "%d분", a.min_d);
 		trans1 = gtk_label_new(EncodingKR(s));
 		gtk_widget_set_size_request(trans1, 5, 3);
 		listbt2 = gtk_widget_get_style_context(trans1);
 		gtk_style_context_add_class(listbt2, "label");
-		gtk_table_attach_defaults(GTK_LAYOUT(table), trans1, 1, 2, 3, 4);
+		gtk_table_attach_defaults(GTK_LAYOUT(table), trans1, 1, 2, tempi + 2, tempi + 3);
 
 		i = 0;
 		tempi = 0;
 		curr = a.search_f;
 		while (curr != a.search2)
 		{
-			if (i != 0 && i % 5 == 0)
+			if (i != 0 && i % 6 == 0)
 				tempi += 1;
 			if (i == 0)
-				sprintf(tempstr, "%s", curr->station);
+			{
+				sprintf(tempstr, "%s", a.end_name);
+				sublabels[i] = gtk_label_new(EncodingKR(tempstr));
+				listbt2 = gtk_widget_get_style_context(sublabels[i]);
+				gtk_style_context_add_class(listbt2, "label");
+				gtk_table_attach_defaults(GTK_TABLE(table), sublabels[i], i - (tempi * 6), i - (tempi * 6) + 1, tempi+5, tempi + 6);
+			}
 			else
-				sprintf(tempstr, "-----▶   %s", curr->station);
-			sublabels[i] = gtk_label_new(EncodingKR(tempstr));
-			listbt2 = gtk_widget_get_style_context(sublabels[i]);
-			gtk_style_context_add_class(listbt2, "label");
-			gtk_table_attach_defaults(GTK_TABLE(table), sublabels[i], i - (tempi * 5), i - (tempi * 5) + 1, tempi + 4, tempi + 5);
+			{
+				if (i == 1)
+					sprintf(tempstr, "%s", curr->station);
+				else
+					sprintf(tempstr, "-----▶   %s", curr->station);
+				sublabels[i] = gtk_label_new(EncodingKR(tempstr));
+				listbt2 = gtk_widget_get_style_context(sublabels[i]);
+				gtk_style_context_add_class(listbt2, "label");
+				gtk_table_attach_defaults(GTK_TABLE(table), sublabels[i], i - (tempi * 6)-1, i - (tempi * 6) , tempi + 6, tempi + 7);
 
-			if (a.check_end == '1')
-				curr = curr->next;
-			else
-				curr = curr->back;
+				if (a.check_end == '1')
+					curr = curr->next;
+				else
+					curr = curr->back;
+			}
 			i++;
 		}
-		
+
 		i++;
 		sprintf(tempstr, "-----▶   %s", curr->station);
 		sublabels[i] = gtk_label_new(EncodingKR(tempstr));
 		listbt2 = gtk_widget_get_style_context(sublabels[i]);
 		gtk_style_context_add_class(listbt2, "label");
-		gtk_table_attach_defaults(GTK_TABLE(table), sublabels[i], (i - 1) - (tempi * 5), i - (tempi * 5), tempi + 4, tempi + 5);
+		gtk_table_attach_defaults(GTK_TABLE(table), sublabels[i], (i - 1) - (tempi * 6)-1, i - (tempi * 6)-1, tempi + 6, tempi + 7);
 	}
 
 	gtk_layout_put(GTK_LAYOUT(g_ptr_array_index(detale_num, 0)), detale_scrolled_window, 200, 40);
