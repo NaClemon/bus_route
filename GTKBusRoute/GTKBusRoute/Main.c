@@ -46,7 +46,7 @@ typedef struct detale_p
 	int min;      //소요시간
 	int min_d;
 	char check_start; //출발에대해 back확인
-	char check_end;   
+	char check_end;
 	char start_name[20];
 	char end_name[20];
 
@@ -99,7 +99,7 @@ void Label_Inform(GtkWidget*);					// 선택 버튼 정류장 정보 저장(주�
 void Label_Inform_bus(GtkWidget*);				// 선택 버튼 정류장 정보 저장(버스 선택)
 void KnowToLabel(GtkWidget*, int);				// 정류장 선택 확인(주요 장소)
 void KnowToLabelBUS(GtkWidget*, int);			// 정류장 선택 확인(버스 선택)
-void KnowToButtondetale(GtkWidget* , int );
+void KnowToButtondetale(GtkWidget*, int);
 
 /* 기능 관련 */
 void Read_File_Bus(char*, Bus*);					// 파일 읽기 함수(버스)
@@ -123,7 +123,7 @@ char check_end = 0;
 /// </summary>
 int main(int argc, char** argv)
 {
-	#pragma region 버스 정보 저장
+#pragma region 버스 정보 저장
 
 	A = (Bus*)malloc(sizeof(Bus) * 100);
 	Read_File_Bus("512.csv", A);
@@ -133,16 +133,16 @@ int main(int argc, char** argv)
 	Read_File_Bus("717.csv", C);
 	D = (Bus*)malloc(sizeof(Bus) * 100);
 	Read_File_Bus("823.csv", D);
-	
-	#pragma endregion
+
+#pragma endregion
 
 
-	#pragma region 주요 장소 정보 저장
+#pragma region 주요 장소 정보 저장
 
 	main_place = (Place*)malloc(sizeof(Place));
 	Read_File_Place("place.csv", main_place);
 
-	#pragma endregion
+#pragma endregion
 
 	// gtk 초기화
 	gtk_init(&argc, &argv);
@@ -173,7 +173,7 @@ void Main_Menu()
 
 	char* temp_string;
 
-	#pragma region 윈도우 창 생성
+#pragma region 윈도우 창 생성
 
 	// 윈도우 창 생성 및 설정
 	temp_string = EncodingKR("버스 노선도");
@@ -189,9 +189,9 @@ void Main_Menu()
 	image = gtk_image_new_from_file("backGI.png");
 	gtk_layout_put(GTK_LAYOUT(frame), image, 0, 0);
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region 버튼 생성
+#pragma region 버튼 생성
 
 	// 버튼 생성 후 프레임에 고정
 	temp_string = EncodingKR("버스 정류장");
@@ -199,7 +199,7 @@ void Main_Menu()
 	gtk_widget_set_name(bus_button, "bus_button");
 	gtk_widget_set_size_request(bus_button, 100, 75);
 	gtk_layout_put(GTK_LAYOUT(frame), bus_button, 145, 395);
-	
+
 	// 원형 버튼 테스트
 	/*gtk_style_context_add_class(
 		gtk_widget_get_style_context(GTK_WIDGET(bus_button)),
@@ -212,18 +212,18 @@ void Main_Menu()
 	gtk_widget_set_size_request(place_button, 100, 75);
 	gtk_layout_put(GTK_LAYOUT(frame), place_button, 465, 395);
 
-	#pragma endregion
+#pragma endregion
 
 	gtk_widget_show_all(main_window);
 
 	g_signal_connect(main_window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
-	#pragma region 버튼 클릭
+#pragma region 버튼 클릭
 
 	g_signal_connect(bus_button, "clicked", G_CALLBACK(Bus_Menu), main_window);
 	g_signal_connect(place_button, "clicked", G_CALLBACK(Place_Menu), main_window);
 
-	#pragma endregion
+#pragma endregion
 }
 
 /// <summary>
@@ -256,7 +256,7 @@ void Bus_Menu(GtkWidget* widget, gpointer window)
 
 	check_frame = 0;
 
-	#pragma region 새 창 생성
+#pragma region 새 창 생성
 
 	temp_string = EncodingKR("버스 정류장");
 	bus_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -270,9 +270,9 @@ void Bus_Menu(GtkWidget* widget, gpointer window)
 	image = gtk_image_new_from_file("menu.jpg");
 	gtk_layout_put(GTK_LAYOUT(frame), image, 0, 0);
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region 버스 버튼 생성
+#pragma region 버스 버튼 생성
 
 	busButton[0] = gtk_button_new_with_label("");
 	gtk_widget_set_size_request(busButton[0], 1, 1);
@@ -302,9 +302,9 @@ void Bus_Menu(GtkWidget* widget, gpointer window)
 	gtk_layout_put(GTK_LAYOUT(frame), label, 25, 220);
 	gtk_layout_put(GTK_LAYOUT(frame), busButton[3], 10, 185);
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region 출도착 정류장 정보 표시
+#pragma region 출도착 정류장 정보 표시
 
 	temp_string = EncodingKR("출발 지점: ");
 	start_label = gtk_label_new(temp_string);
@@ -320,9 +320,9 @@ void Bus_Menu(GtkWidget* widget, gpointer window)
 	//gtk_layout_put(GTK_LAYOUT(frame), end_label, 460, 450);
 	gtk_layout_put(GTK_LAYOUT(frame), end_label, 400, 550);
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region 기능 버튼
+#pragma region 기능 버튼
 
 	temp_string = EncodingKR("결과 확인 ▶");
 	resultButton = gtk_button_new_with_label(temp_string);
@@ -338,9 +338,9 @@ void Bus_Menu(GtkWidget* widget, gpointer window)
 	gtk_style_context_add_class(cancel, "back");
 	gtk_layout_put(GTK_LAYOUT(frame), closeButton, 675, 550);
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region 뒤로 가기
+#pragma region 뒤로 가기
 
 	temp = g_ptr_array_new();
 	g_ptr_array_add(temp, bus_window);
@@ -348,9 +348,9 @@ void Bus_Menu(GtkWidget* widget, gpointer window)
 
 	g_signal_connect(closeButton, "clicked", G_CALLBACK(Close_Window), temp);
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region 버스 클릭
+#pragma region 버스 클릭
 
 	bus_button_num = g_ptr_array_new();
 	g_ptr_array_add(bus_button_num, frame);
@@ -359,7 +359,7 @@ void Bus_Menu(GtkWidget* widget, gpointer window)
 		g_signal_connect(busButton[j], "clicked", G_CALLBACK(KnowToButtonBUS), j);
 	}
 
-	#pragma endregion
+#pragma endregion
 
 	// 결과 확인 버튼 테스트
 	g_signal_connect(resultButton, "clicked", G_CALLBACK(Result_Menu), bus_window);
@@ -395,7 +395,7 @@ void Bus_Station(GtkWidget* widget)
 	if (check_frame == 1)
 		gtk_container_remove(GTK_CONTAINER(g_ptr_array_index(bus_button_num, 0)), bus_scrolled_window);
 
-	#pragma region 스크롤 윈도우 생성
+#pragma region 스크롤 윈도우 생성
 
 	bus_scrolled_window = gtk_scrolled_window_new(NULL, NULL);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(bus_scrolled_window),
@@ -407,9 +407,9 @@ void Bus_Station(GtkWidget* widget)
 	gtk_scrolled_window_add_with_viewport(
 		GTK_SCROLLED_WINDOW(bus_scrolled_window), table);
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region 버스 정류장 출력
+#pragma region 버스 정류장 출력
 
 	if (bus == 0) { //105
 		curr = B->next;
@@ -472,7 +472,7 @@ void Bus_Station(GtkWidget* widget)
 		}
 	}
 
-	#pragma endregion
+#pragma endregion
 
 	if (check_start == 0)
 	{
@@ -555,7 +555,7 @@ void Place_Menu(GtkWidget* widget, gpointer window)
 
 	check_frame = 0;
 
-	#pragma region 새 창 생성
+#pragma region 새 창 생성
 
 	temp_string = EncodingKR("주요 장소");
 	place_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -573,9 +573,9 @@ void Place_Menu(GtkWidget* widget, gpointer window)
 	gtk_table_set_row_spacings(GTK_TABLE(table), 25);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 15);
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region 주요 장소 버튼 생성
+#pragma region 주요 장소 버튼 생성
 
 	curr = main_place->next;
 	while (curr != NULL)
@@ -592,9 +592,9 @@ void Place_Menu(GtkWidget* widget, gpointer window)
 	}
 	gtk_layout_put(GTK_LAYOUT(frame), table, 10, 10);
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region 출도착 정류장 정보 표시
+#pragma region 출도착 정류장 정보 표시
 
 	temp_string = EncodingKR("출발 지점: ");
 	start_label = gtk_label_new(temp_string);
@@ -608,9 +608,9 @@ void Place_Menu(GtkWidget* widget, gpointer window)
 	gtk_style_context_add_class(labelstyle, "label");
 	gtk_layout_put(GTK_LAYOUT(frame), end_label, 400, 550);
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region 버튼 생성
+#pragma region 버튼 생성
 
 	temp_string = EncodingKR("결과 확인 ▶");
 	resultButton = gtk_button_new_with_label(temp_string);
@@ -626,9 +626,9 @@ void Place_Menu(GtkWidget* widget, gpointer window)
 	gtk_style_context_add_class(cancel, "back");
 	gtk_layout_put(GTK_LAYOUT(frame), closeButton, 675, 550);
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region 뒤로 가기
+#pragma region 뒤로 가기
 
 	temp = g_ptr_array_new();
 	g_ptr_array_add(temp, place_window);
@@ -636,9 +636,9 @@ void Place_Menu(GtkWidget* widget, gpointer window)
 
 	g_signal_connect(closeButton, "clicked", G_CALLBACK(Close_Window), temp);
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region 주요 장소 클릭
+#pragma region 주요 장소 클릭
 
 	place_button_num = g_ptr_array_new();
 	g_ptr_array_add(place_button_num, frame);
@@ -651,7 +651,7 @@ void Place_Menu(GtkWidget* widget, gpointer window)
 		j++;
 	}
 
-	#pragma endregion
+#pragma endregion
 
 	// 결과 확인 버튼 테스트
 	g_signal_connect(resultButton, "clicked", G_CALLBACK(Result_Menu), place_window);
@@ -687,11 +687,11 @@ void Place_Bus_Station(GtkWidget* widget)
 	char* temp_string;
 	int i;
 	int j;
-	
+
 	if (check_frame == 1)
 		gtk_container_remove(GTK_CONTAINER(g_ptr_array_index(place_button_num, 0)), place_scrolled_window);
 
-	#pragma region 스크롤 윈도우 생성
+#pragma region 스크롤 윈도우 생성
 
 	place_scrolled_window = gtk_scrolled_window_new(NULL, NULL);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(place_scrolled_window),
@@ -703,9 +703,9 @@ void Place_Bus_Station(GtkWidget* widget)
 	gtk_scrolled_window_add_with_viewport(
 		GTK_SCROLLED_WINDOW(place_scrolled_window), table);
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region 근처 장소 출력
+#pragma region 근처 장소 출력
 
 	// 선택한 장소 찾기 위함
 	curr = main_place->next;
@@ -736,12 +736,12 @@ void Place_Bus_Station(GtkWidget* widget)
 		i++;
 	}
 
-	#pragma endregion
-	
+#pragma endregion
+
 	gtk_layout_put(GTK_LAYOUT(g_ptr_array_index(place_button_num, 0)), place_scrolled_window, 200, 10);
 	gtk_widget_set_size_request(place_scrolled_window, 400, 400);
 
-	#pragma region 출도착 라벨 변경
+#pragma region 출도착 라벨 변경
 
 	if (check_start == 0)
 	{
@@ -754,7 +754,7 @@ void Place_Bus_Station(GtkWidget* widget)
 	gtk_style_context_add_class(labelstyle, "label");
 	gtk_layout_put(GTK_LAYOUT(g_ptr_array_index(place_button_num, 0)), startlb, 200, 551);
 
-	if (check_end== 0)
+	if (check_end == 0)
 	{
 		temp_string = EncodingKR("");
 		endlb = gtk_label_new(temp_string);
@@ -765,9 +765,9 @@ void Place_Bus_Station(GtkWidget* widget)
 	gtk_style_context_add_class(labelstyle, "label");
 	gtk_layout_put(GTK_LAYOUT(g_ptr_array_index(place_button_num, 0)), endlb, 480, 551);
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region 출도착 정보 저장
+#pragma region 출도착 정보 저장
 
 	place_station_button = g_ptr_array_new();
 	g_ptr_array_add(place_station_button, startlb);
@@ -784,7 +784,7 @@ void Place_Bus_Station(GtkWidget* widget)
 		j++;
 	}
 
-	#pragma endregion
+#pragma endregion
 
 	gtk_widget_show_all(place_window);
 	g_ptr_array_remove_index(place_button_num, 1);
@@ -825,12 +825,12 @@ void Result_Menu(GtkWidget* widget, gpointer* window)
 	int ai = 0;
 
 	check_frame = 0;
-	
+
 	if (check_start != 1 || check_end != 1)
 		return;
 	gtk_widget_hide(window);
 
-	#pragma region 윈도우 창 생성
+#pragma region 윈도우 창 생성
 
 	Calc_Detale();
 	sprintf(s, "%d", a.min);
@@ -843,7 +843,7 @@ void Result_Menu(GtkWidget* widget, gpointer* window)
 
 	frame = gtk_layout_new(NULL, NULL);
 	gtk_container_add(GTK_CONTAINER(result_window), frame);
-	
+
 	image = gtk_image_new_from_file("resultbg.png");
 	gtk_layout_put(GTK_LAYOUT(frame), image, 0, 0);
 
@@ -870,7 +870,7 @@ void Result_Menu(GtkWidget* widget, gpointer* window)
 		arrow[ai] = gtk_label_new("|");
 		labelstyle = gtk_widget_get_style_context(arrow[ai]);
 		gtk_style_context_add_class(labelstyle, "label");
-		gtk_layout_put(GTK_LAYOUT(frame), arrow[ai], 85, 70 + ai*13);
+		gtk_layout_put(GTK_LAYOUT(frame), arrow[ai], 85, 70 + ai * 13);
 	}
 
 	if (a.check_end != '2')
@@ -897,7 +897,7 @@ void Result_Menu(GtkWidget* widget, gpointer* window)
 			arrow[ai] = gtk_label_new("|");
 			labelstyle = gtk_widget_get_style_context(arrow[ai]);
 			gtk_style_context_add_class(labelstyle, "label");
-			gtk_layout_put(GTK_LAYOUT(frame), arrow[ai], 85, 73 + (ai+1) * 13);
+			gtk_layout_put(GTK_LAYOUT(frame), arrow[ai], 85, 73 + (ai + 1) * 13);
 		}
 
 		arrow[12] = gtk_label_new(EncodingKR("▼"));
@@ -927,7 +927,7 @@ void Result_Menu(GtkWidget* widget, gpointer* window)
 	gtk_style_context_add_class(labelstyle, "label");
 	gtk_layout_put(GTK_LAYOUT(frame), endb, 20, 250);
 
-	
+
 	temp_string = EncodingKR(a.search2->station);
 	endb1 = gtk_label_new(temp_string);
 	labelstyle = gtk_widget_get_style_context(endb1);
@@ -946,9 +946,9 @@ void Result_Menu(GtkWidget* widget, gpointer* window)
 	gtk_style_context_add_class(labelstyle, "label");
 	gtk_layout_put(GTK_LAYOUT(frame), min1, 98, 300);
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region 버튼
+#pragma region 버튼
 
 	temp_string = EncodingKR("◀ 뒤로 가기");
 	closeButton = gtk_button_new_with_label(temp_string);
@@ -956,7 +956,7 @@ void Result_Menu(GtkWidget* widget, gpointer* window)
 	cancel = gtk_widget_get_style_context(closeButton);
 	gtk_style_context_add_class(cancel, "back");
 	gtk_layout_put(GTK_LAYOUT(frame), closeButton, 680, 550);
-	
+
 	// 위치 수정 필요
 	temp_string = EncodingKR("자세히 보기");
 	detailButton = gtk_button_new_with_label(temp_string);
@@ -966,22 +966,22 @@ void Result_Menu(GtkWidget* widget, gpointer* window)
 
 
 
-	#pragma endregion
+#pragma endregion
 
 	// 수정 중
-	#pragma region 뒤로 가기
+#pragma region 뒤로 가기
 
 	temp = g_ptr_array_new();
 	g_ptr_array_add(temp, result_window);
 	g_ptr_array_add(temp, main_window);
 
-	detale_num= g_ptr_array_new();
+	detale_num = g_ptr_array_new();
 	g_ptr_array_add(detale_num, frame);
-	
+
 	g_signal_connect(closeButton, "clicked", G_CALLBACK(Close_Window), temp);
 	g_signal_connect(detailButton, "clicked", G_CALLBACK(Detail_Result), NULL);
 
-	#pragma endregion
+#pragma endregion
 
 	gtk_window_set_modal(GTK_WINDOW(result_window), TRUE);
 	gtk_widget_show_all(result_window);
@@ -1116,7 +1116,7 @@ void Dis_Result(double temp_lat, double temp_lon, Near* checking, Bus* ch_bus, i
 	while (curr != NULL)
 	{
 		comp_dis = Calc_Dis(temp_lat, temp_lon, curr->latitude, curr->longitude);
-		if (comp_dis < 0.8) 
+		if (comp_dis < 0.8)
 		{
 			temp_near[i] = (Near*)malloc(sizeof(Near));
 			if (i == 0)
@@ -1141,7 +1141,7 @@ void Dis_Result(double temp_lat, double temp_lon, Near* checking, Bus* ch_bus, i
 			default:
 				break;
 			}
-			
+
 			strcpy_s(temp_near[i]->station, sizeof(temp_near[i]->station), curr->station);
 			temp_near[i]->latitude = curr->latitude;
 			temp_near[i]->longitude = curr->longitude;
@@ -1454,6 +1454,7 @@ void Calc_Detale()
 	Bus* stemp = NULL;
 	Bus* ftemp = NULL;
 	char sp = '0', fp = '0';//환승여부
+	int ku;
 
 	a.search1 = NULL;
 	a.search2 = NULL;
@@ -1493,7 +1494,7 @@ void Calc_Detale()
 		f_state[i] = (char*)malloc(sizeof(char) * 255);
 	}
 	*/
-	
+
 	//이작업을 A~모든 버스에 적용시켜야 함5/20 이종영
 	//시작 정류장 해당 버스찾기
 	search1 = A;
@@ -1507,13 +1508,14 @@ void Calc_Detale()
 			a.search1 = search1;
 			sp = 'A';
 			strcpy(a.start_name, "출발: 512번");
+			ku = 1;
 			break;
 		}
 		search1 = search1->next;
 		if (search1 == NULL)
 			break;
 	}
-    if (sp == '0')
+	if (sp == '0')
 	{
 		search1 = B;
 		while (1)
@@ -1526,6 +1528,7 @@ void Calc_Detale()
 				a.search1 = search1;
 				sp = 'B';
 				strcpy(a.start_name, "출발: 105번");
+				ku = 2;
 				break;
 			}
 			search1 = search1->next;
@@ -1546,6 +1549,7 @@ void Calc_Detale()
 				a.search1 = search1;
 				sp = 'C';
 				strcpy(a.start_name, "출발: 717번");
+				ku = 3;
 				break;
 			}
 			search1 = search1->next;
@@ -1553,7 +1557,7 @@ void Calc_Detale()
 				break;
 		}
 	}
-	if (sp == '0' )
+	if (sp == '0')
 	{
 		search1 = D;
 		while (1)
@@ -1566,6 +1570,7 @@ void Calc_Detale()
 				a.search1 = search1;
 				sp = 'D';
 				strcpy(a.start_name, "출발: 823번");
+				ku = 4;
 				break;
 			}
 			search1 = search1->next;
@@ -1576,82 +1581,89 @@ void Calc_Detale()
 
 	//이작업을 A~모든 버스에 적용시켜야 함5/20 이종영
 	//도착 정류장 해당 버스찾기
-	search2 = A;
-	while (1)
+	for (int i = 0; i < 4; i++)
 	{
-		if (!strncmp(search2->station, end, sizeof(char) * 255))
+		if (fp == '0' && ku == 1)
 		{
-			Finish = search2;
-			Finish_back = search2;
-			ftemp = search2;
-			a.search2 = search2;
-			fp = 'A';
-			strcpy(a.end_name, "환승: 512번");
-			break;
-		}
-		search2 = search2->next;
-		if (search2 == NULL)
-			break;
-	}
-	if (fp == '0')
-	{
-		search2 = B;
-		while (1)
-		{
-			if (!strncmp(search2->station, end, sizeof(char) * 255))
+			search2 = A;
+			while (1)
 			{
-				Finish = search2;
-				Finish_back = search2;
-				ftemp = search2;
-				a.search2 = search2;
-				fp = 'B';
-				strcpy(a.end_name, "환승: 105번");
-				break;
+				if (!strncmp(search2->station, end, sizeof(char) * 255))
+				{
+					Finish = search2;
+					Finish_back = search2;
+					ftemp = search2;
+					a.search2 = search2;
+					fp = 'A';
+					strcpy(a.end_name, "환승: 512번");
+					break;
+				}
+				search2 = search2->next;
+				if (search2 == NULL)
+					break;
 			}
-			search2 = search2->next;
-			if (search2 == NULL)
-				break;
 		}
-	}
-	if (fp == '0' )
-	{
-		search2 = C;
-		while (1)
+		if (fp == '0' && ku == 2)
 		{
-			if (!strncmp(search2->station, end, sizeof(char) * 255))
+			search2 = B;
+			while (1)
 			{
-				Finish = search2;
-				Finish_back = search2;
-				ftemp = search2;
-				a.search2 = search2;
-				fp = 'C';
-				strcpy(a.end_name, "환승: 717번");
-				break;
+				if (!strncmp(search2->station, end, sizeof(char) * 255))
+				{
+					Finish = search2;
+					Finish_back = search2;
+					ftemp = search2;
+					a.search2 = search2;
+					fp = 'B';
+					strcpy(a.end_name, "환승: 105번");
+					break;
+				}
+				search2 = search2->next;
+				if (search2 == NULL)
+					break;
 			}
-			search2 = search2->next;
-			if (search2 == NULL)
-				break;
 		}
-	}
-	if (fp == '0')
-	{
-		search2 = D;
-		while (1)
+		if (fp == '0' && ku == 3)
 		{
-			if (!strncmp(search2->station, end, sizeof(char) * 255))
+			search2 = C;
+			while (1)
 			{
-				Finish = search2;
-				Finish_back = search2;
-				ftemp = search2;
-				a.search2 = search2;
-				fp = 'D';
-				strcpy(a.end_name, "환승: 823번");
-				break;
+				if (!strncmp(search2->station, end, sizeof(char) * 255))
+				{
+					Finish = search2;
+					Finish_back = search2;
+					ftemp = search2;
+					a.search2 = search2;
+					fp = 'C';
+					strcpy(a.end_name, "환승: 717번");
+					break;
+				}
+				search2 = search2->next;
+				if (search2 == NULL)
+					break;
 			}
-			search2 = search2->next;
-			if (search2==NULL)
-				break;
 		}
+		if (fp == '0' && ku == 4)
+		{
+			search2 = D;
+			while (1)
+			{
+				if (!strncmp(search2->station, end, sizeof(char) * 255))
+				{
+					Finish = search2;
+					Finish_back = search2;
+					ftemp = search2;
+					a.search2 = search2;
+					fp = 'D';
+					strcpy(a.end_name, "환승: 823번");
+					break;
+				}
+				search2 = search2->next;
+				if (search2 == NULL)
+					break;
+			}
+		}
+		ku = (ku + 1) % 4;
 	}
 	if (sp == fp) //환승없을때 
 	{
@@ -1701,7 +1713,7 @@ void Calc_Detale()
 				{
 					if (Start != NULL)
 					{
-						s_distence += Calc_Dis(Start->latitude, Start->longitude, stemp->latitude, stemp->longitude) +1;
+						s_distence += Calc_Dis(Start->latitude, Start->longitude, stemp->latitude, stemp->longitude) + 1;
 						w_distence = Calc_Dis(Start->latitude, Start->longitude, Finish->latitude, Finish->longitude);
 						min_s = s_distence + f_distence + w_distence * 15;
 						if (min_s < min)
@@ -1724,7 +1736,7 @@ void Calc_Detale()
 					}
 					else if (Start_back != NULL)
 					{
-						s_distence += Calc_Dis(Start_back->latitude, Start_back->longitude, stemp->latitude, stemp->longitude) +1;
+						s_distence += Calc_Dis(Start_back->latitude, Start_back->longitude, stemp->latitude, stemp->longitude) + 1;
 						w_distence = Calc_Dis(Start_back->latitude, Start_back->longitude, Finish->latitude, Finish->longitude);
 						min_s = s_distence + f_distence + w_distence * 15;
 						if (min_s < min)
@@ -1761,7 +1773,7 @@ void Calc_Detale()
 				{
 					if (Start)
 					{
-						s_distence += Calc_Dis(Start->latitude, Start->longitude, stemp->latitude, stemp->longitude) +1;
+						s_distence += Calc_Dis(Start->latitude, Start->longitude, stemp->latitude, stemp->longitude) + 1;
 						w_distence = Calc_Dis(Start->latitude, Start->longitude, Finish_back->latitude, Finish_back->longitude);
 						min_s = s_distence + f_distence + w_distence * 15;
 						if (min_s < min)
@@ -1784,7 +1796,7 @@ void Calc_Detale()
 					}
 					else if (Start_back)
 					{
-						s_distence += Calc_Dis(Start_back->latitude, Start_back->longitude, stemp->latitude, stemp->longitude) +1;
+						s_distence += Calc_Dis(Start_back->latitude, Start_back->longitude, stemp->latitude, stemp->longitude) + 1;
 						w_distence = Calc_Dis(Start_back->latitude, Start_back->longitude, Finish_back->latitude, Finish_back->longitude);
 						min_s = s_distence + f_distence + w_distence * 15;
 						if (min_s < min)
@@ -1805,8 +1817,8 @@ void Calc_Detale()
 				}
 				ftemp = Finish_back;
 				Finish_back = Finish_back->back;
-				if(Finish_back!=NULL)
-				f_distence += Calc_Dis(Finish_back->latitude, Finish_back->longitude, ftemp->latitude, ftemp->longitude) + 1;
+				if (Finish_back != NULL)
+					f_distence += Calc_Dis(Finish_back->latitude, Finish_back->longitude, ftemp->latitude, ftemp->longitude) + 1;
 			}
 			else
 				break;
@@ -1814,7 +1826,7 @@ void Calc_Detale()
 		}
 		if (a.min_d > 30)
 		{
-			a.min = a.min - a.min_d+10;
+			a.min = a.min - a.min_d + 10;
 			a.min_d = 10;
 		}
 
@@ -1887,7 +1899,7 @@ void Detail_Result(GtkWidget* widget)
 				labels[i] = gtk_label_new(EncodingKR(tempstr));
 				listbt2 = gtk_widget_get_style_context(labels[i]);
 				gtk_style_context_add_class(listbt2, "label");
-				gtk_table_attach_defaults(GTK_TABLE(table), labels[i], i - (tempi * 6)-1, i - (tempi * 6) , tempi+1, tempi + 2);
+				gtk_table_attach_defaults(GTK_TABLE(table), labels[i], i - (tempi * 6) - 1, i - (tempi * 6), tempi + 1, tempi + 2);
 
 				if (a.check_start == '0')
 					curr = curr->next;
@@ -1901,7 +1913,7 @@ void Detail_Result(GtkWidget* widget)
 		labels[i] = gtk_label_new(EncodingKR(tempstr));
 		listbt2 = gtk_widget_get_style_context(labels[i]);
 		gtk_style_context_add_class(listbt2, "label");
-		gtk_table_attach_defaults(GTK_TABLE(table), labels[i], (i - 2) - (tempi * 6), i - (tempi * 6)-1, tempi+1, tempi + 2);
+		gtk_table_attach_defaults(GTK_TABLE(table), labels[i], (i - 2) - (tempi * 6), i - (tempi * 6) - 1, tempi + 1, tempi + 2);
 	}
 	else
 	{
@@ -1926,7 +1938,7 @@ void Detail_Result(GtkWidget* widget)
 				labels[i] = gtk_label_new(EncodingKR(tempstr));
 				listbt2 = gtk_widget_get_style_context(labels[i]);
 				gtk_style_context_add_class(listbt2, "label");
-				gtk_table_attach_defaults(GTK_TABLE(table), labels[i], i - (tempi * 6)-1, i - (tempi * 6) , tempi+1, tempi+2 );
+				gtk_table_attach_defaults(GTK_TABLE(table), labels[i], i - (tempi * 6) - 1, i - (tempi * 6), tempi + 1, tempi + 2);
 
 				if (a.check_start == '0')
 					curr = curr->next;
@@ -1941,7 +1953,7 @@ void Detail_Result(GtkWidget* widget)
 		labels[i] = gtk_label_new(EncodingKR(tempstr));
 		listbt2 = gtk_widget_get_style_context(labels[i]);
 		gtk_style_context_add_class(listbt2, "label");
-		gtk_table_attach_defaults(GTK_TABLE(table), labels[i], (i - 1) - (tempi * 6)-1, i - (tempi * 6)-1, tempi+1, tempi+2 );
+		gtk_table_attach_defaults(GTK_TABLE(table), labels[i], (i - 1) - (tempi * 6) - 1, i - (tempi * 6) - 1, tempi + 1, tempi + 2);
 
 		temp_string = EncodingKR("도보 이동:");
 		trans = gtk_label_new(temp_string);
@@ -1970,7 +1982,7 @@ void Detail_Result(GtkWidget* widget)
 				sublabels[i] = gtk_label_new(EncodingKR(tempstr));
 				listbt2 = gtk_widget_get_style_context(sublabels[i]);
 				gtk_style_context_add_class(listbt2, "label");
-				gtk_table_attach_defaults(GTK_TABLE(table), sublabels[i], i - (tempi * 6), i - (tempi * 6) + 1, tempi+5, tempi + 6);
+				gtk_table_attach_defaults(GTK_TABLE(table), sublabels[i], i - (tempi * 6), i - (tempi * 6) + 1, tempi + 6, tempi + 7);
 			}
 			else
 			{
@@ -1981,7 +1993,7 @@ void Detail_Result(GtkWidget* widget)
 				sublabels[i] = gtk_label_new(EncodingKR(tempstr));
 				listbt2 = gtk_widget_get_style_context(sublabels[i]);
 				gtk_style_context_add_class(listbt2, "label");
-				gtk_table_attach_defaults(GTK_TABLE(table), sublabels[i], i - (tempi * 6)-1, i - (tempi * 6) , tempi + 6, tempi + 7);
+				gtk_table_attach_defaults(GTK_TABLE(table), sublabels[i], i - (tempi * 6) - 1, i - (tempi * 6), tempi + 7, tempi + 8);
 
 				if (a.check_end == '1')
 					curr = curr->next;
@@ -1996,7 +2008,7 @@ void Detail_Result(GtkWidget* widget)
 		sublabels[i] = gtk_label_new(EncodingKR(tempstr));
 		listbt2 = gtk_widget_get_style_context(sublabels[i]);
 		gtk_style_context_add_class(listbt2, "label");
-		gtk_table_attach_defaults(GTK_TABLE(table), sublabels[i], (i - 1) - (tempi * 6)-1, i - (tempi * 6)-1, tempi + 6, tempi + 7);
+		gtk_table_attach_defaults(GTK_TABLE(table), sublabels[i], (i - 1) - (tempi * 6) - 1, i - (tempi * 6) - 1, tempi + 7, tempi + 8);
 	}
 
 	gtk_layout_put(GTK_LAYOUT(g_ptr_array_index(detale_num, 0)), detale_scrolled_window, 200, 40);
